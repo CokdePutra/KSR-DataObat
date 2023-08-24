@@ -50,10 +50,6 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- <div class="form-group">
-                            <label for="stock">Stock</label>
-                            <input type="text" name="stock" id="stock" class="form-control" placeholder="place enter medicine stock" autocomplete="off" autofocus>
-                        </div> --}}
                         <div class="form-group">
                             <label for="unit">Unit</label>
                             <select name="unit" id="unit" class="form-control">
@@ -67,10 +63,6 @@
                         <div class="form-group other_unit" hidden>
                             <input type="text" name="other_unit" id="other_unit" class="form-control mt-3" placeholder="place enter medicine unit" autocomplete="off" autofocus>
                         </div>
-                        {{-- <div class="form-group">
-                            <label for="expired_date">Expired date</label>
-                            <input type="date" name="expired_date" id="expired_date" class="form-control" placeholder="place enter medicine expired date" autocomplete="off" autofocus>
-                        </div> --}}
                         <div class="form-group">
                             <label for="image">Image</label>
                             <input type="file" name="image" id="image" class="form-control" placeholder="place enter medicine image" autocomplete="off" autofocus>

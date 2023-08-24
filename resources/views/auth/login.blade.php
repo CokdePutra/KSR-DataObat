@@ -23,7 +23,7 @@
 
         <style>
             body {
-                background-image: url('https://d1ojs48v3n42tp.cloudfront.net/provider_location_banner/225855_3-3-2020_1-51-8.jpg');
+                background-image: url('https://www.stikom-bali.ac.id/id/wp-content/uploads/2021/01/stikom-depan.jpg');
                 background-repeat: no-repeat;
                 background-size: cover;
                 background-position: center;
@@ -34,7 +34,7 @@
 
     <body>
         <div class="account-pages my-5 pt-sm-5">
-            <div class="container mt-5">
+            <div class="container mt-5 pt-5">
                 <div class="row justify-content-center mt-5">
                     <div class="col-md-8 col-lg-6 col-xl-5">
                         <div class="card overflow-hidden">

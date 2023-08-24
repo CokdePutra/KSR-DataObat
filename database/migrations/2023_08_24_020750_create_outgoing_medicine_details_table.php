@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('incoming_medicines', function (Blueprint $table) {
+        Schema::create('outgoing_medicine_details', function (Blueprint $table) {
             $table->string('id')->primary();
+            $table->string('outgoing_medicine_id', 50);
+            $table->foreign('outgoing_medicine_id')->references('id')->on('outgoing_medicines')->onDelete('cascade');
+            $table->string('medicine_id', 50);
+            $table->foreign('medicine_id')->references('id')->on('medicines')->onDelete('cascade');
             $table->string('batch_id', 50);
             $table->foreign('batch_id')->references('id')->on('batches')->onDelete('cascade');
-            $table->date('incoming_date');
+            $table->integer('quantity');
             $table->timestamps();
         });
     }
@@ -25,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('incoming_medicines');
+        Schema::dropIfExists('outgoing_medicine_details');
     }
 };

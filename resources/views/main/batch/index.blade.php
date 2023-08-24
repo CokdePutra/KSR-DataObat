@@ -1,6 +1,6 @@
 @extends('template.master')
 
-@section('page-title', 'Incoming Medicine')
+@section('page-title', 'Medicine Batch')
 @section('page-sub-title', 'Data')
 
 @section('content')
@@ -10,12 +10,12 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6">
-                            Data Incoming Medicine
+                            Data Medicine Batch
                         </div>
                         {{-- @can('petugas') --}}
                             <div class="col-6 d-flex align-items-center">
                                 <div class="m-auto"></div>
-                                <a href="{{route('manage.incoming.medicine.create')}}">
+                                <a href="{{route('batch.create')}}">
                                     <button type="button" class="btn btn-outline-primary">
                                         <i class="nav-icon fa fa-plus font-weight-bold"></i> Add
                                     </button>
@@ -28,24 +28,30 @@
                     <table class="table table-hover table-striped" id="tableData">
                         <thead>
                             <th>No</th>
-                            <th>Category Name</th>
+                            <th>Medicine Name</th>
+                            <th>Batch Number</th>
+                            <th>Quantity</th>
+                            <th>Expired Date</th>
                             <th>Status</th>
                             {{-- @can('petugas') --}}
                             <th>Action</th>
                             {{-- @endcan --}}
                         </thead>
                         <tbody>
-                            @foreach ($categories as $category)
+                            @foreach ($batches as $batch)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $category->name }}</td>
+                                    <td>{{ $batch->medicine->name }}</td>
+                                    <td>{{ $batch->batch_number }}</td>
+                                    <td>{{ $batch->quantity . ' ' . $batch->medicine->unit }}</td>
+                                    <td>{{ date_format(date_create($batch->expired_date), 'd-m-Y') }}</td>
                                     <td>
                                         <span
-                                            class="badge {{ $category->is_active == true ? 'badge-primary' : 'badge-danger' }}">{{ $category->is_active == true ? 'Active' : 'Non-Active' }}</span>
+                                            class="badge {{ $batch->is_active == true ? 'badge-primary' : 'badge-danger' }}">{{ $batch->is_active == true ? 'Active' : 'Non-Active' }}</span>
                                     </td>
                                     {{-- @can('petugas') --}}
                                         <td>
-                                            <a href="{{route('category.edit', $category->id)}}">
+                                            <a href="{{route('batch.edit', $batch->id)}}">
                                                 <button class="btn btn-edit btn-primary">
                                                     <i class="fa fa-pencil text-white mr-2 pointer"></i> Edit
                                                 </button>

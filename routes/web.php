@@ -41,30 +41,29 @@ Route::namespace('Main')->middleware('auth')->group(function () {
             Route::post('/update', 'update')->name('update');
         });
 
-    Route::prefix('manage')
-        ->as('manage.')
+    Route::controller(BatchController::class)
+        ->as('batch.')
+        ->prefix('batch')
         ->group(function () {
-            Route::controller(IncomingMedicineController::class)
-                ->as('incoming.medicine.')
-                ->prefix('incoming-medicine')
-                ->group(function () {
-                    Route::get('/', 'index')->name('index');
-                    Route::get('/create', 'create')->name('create');
-                    Route::get('/edit/{id}', 'edit')->name('edit');
-                    Route::post('/store', 'store')->name('store');
-                    Route::post('/update', 'update')->name('update');
-                });
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/medicine-detail/{medicine_id}', 'medicineDetail')->name('medicine.detail');
+            Route::post('/store', 'store')->name('store');
+            Route::post('/update', 'update')->name('update');
 
-            Route::controller(OutgoingMedicineController::class)
-                ->as('outgoing.medicine.')
-                ->prefix('outgoing-medicine')
-                ->group(function () {
-                    Route::get('/', 'index')->name('index');
-                    Route::get('/create', 'create')->name('create');
-                    Route::get('/edit/{id}', 'edit')->name('edit');
-                    Route::post('/store', 'store')->name('store');
-                    Route::post('/update', 'update')->name('update');
-                });
+        });
+
+    Route::controller(OutgoingMedicineController::class)
+        ->as('outgoing.')
+        ->prefix('outgoing')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/medicine-search/{keyword}', 'medicineSearch')->name('medicine.search');
+            Route::post('/store', 'store')->name('store');
+            Route::post('/update', 'update')->name('update');
         });
 });
 

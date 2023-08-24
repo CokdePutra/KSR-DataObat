@@ -1,7 +1,7 @@
 <?php
 
 function generateBatchNumber($prefix = 'BATCH') {
-    $uniqueIdentifier = uniqid(); // Generates a unique identifier
+    $uniqueIdentifier = substr(uniqid(), 0, 6); // Generates a unique identifier
     $currentDate = date('Ymd');   // Current date in YYYYMMDD format
 
     $batchNumber = "{$prefix}_{$currentDate}_{$uniqueIdentifier}";

@@ -22,17 +22,24 @@
                 </a>
                 <div class="triangle"></div>
             </li>
-            <li class="nav-item {{ Str::contains(request()->url(), 'manage') ? 'active' : '' }}" data-item="manage">
-                <a class="nav-item-hold" href="javascript:void(0)">
+            <li class="nav-item {{ Str::contains(request()->url(), 'batch') ? 'active' : '' }}">
+                <a class="nav-item-hold" href="{{ route('batch.index') }}">
                     <i class="nav-icon i-Administrator"></i>
-                    <span class="nav-text">Manage</span>
+                    <span class="nav-text">Batch</span>
+                </a>
+                <div class="triangle"></div>
+            </li>
+            <li class="nav-item {{ Str::contains(request()->url(), 'outgoing') ? 'active' : '' }}">
+                <a class="nav-item-hold" href="{{route('outgoing.index')}}">
+                    <i class="nav-icon i-Administrator"></i>
+                    <span class="nav-text">Outgoing</span>
                 </a>
                 <div class="triangle"></div>
             </li>
         </div>
     </div>
 
-    <div class="sidebar-left-secondary rtl-ps-none ps" data-perfect-scrollbar="" data-suppress-scroll-x="true">
+    {{-- <div class="sidebar-left-secondary rtl-ps-none ps" data-perfect-scrollbar="" data-suppress-scroll-x="true">
         <!-- Submenu Dashboards -->
         <ul class="childNav" data-parent="manage" style="display: block;">
             <li class="nav-item">
@@ -55,7 +62,7 @@
         <div class="ps__rail-y" style="top: 0px; right: 0px;">
             <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
         </div>
-    </div>
+    </div> --}}
 
     <div class="sidebar-overlay"></div>
 </div>

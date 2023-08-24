@@ -26,4 +26,9 @@ class Batch extends Model
             $model->id = str_replace('-','',Uuid::uuid4()->getHex());
         });
     }
+
+    public function medicine()
+    {
+        return $this->belongsTo(Medicine::class);
+    }
 }
