@@ -15,7 +15,7 @@ class Batch extends Model
     public $incrementing = false;
     protected $keyType = 'string';
     protected $fillable = [
-        'medicine_id', 'quantity', 'expired_date', 'batch_number', 'is_active'
+        'medicine_id', 'stock', 'user_id', 'quantity', 'expired_date', 'batch_number', 'is_active'
     ];
 
     protected static function boot()

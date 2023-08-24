@@ -33,9 +33,11 @@ class BatchController extends Controller
     {
         try {
             $data = [
+                'user_id' => auth()->user()->id,
                 'medicine_id' => $request->medicine_id,
                 'batch_number' => generateBatchNumber(),
                 'quantity' => $request->quantity,
+                'stock' => $request->quantity,
                 'expired_date' => $request->expired_date,
             ];
 
@@ -71,6 +73,7 @@ class BatchController extends Controller
                 'medicine_id' => $request->medicine_id,
                 'batch_number' => generateBatchNumber(),
                 'quantity' => $request->quantity,
+                'stock' => $request->quantity,
                 'expired_date' => $request->expired_date,
                 'is_active' => $request->status,
             ];

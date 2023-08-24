@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('unit', 50);
             $table->string('image', 100)->default('assets/uploads/medicines/default.jpg');
             $table->text('description')->nullable();
+            $table->string('user_id', 50);
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             // $table->date('expired_date');
             $table->boolean('is_active')->default(true);
             $table->timestamps();

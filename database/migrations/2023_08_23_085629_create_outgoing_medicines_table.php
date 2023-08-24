@@ -15,6 +15,8 @@ return new class extends Migration
             $table->string('id')->primary();
             $table->text('description')->nullable();
             $table->date('outgoing_date');
+            $table->string('user_id', 50);
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

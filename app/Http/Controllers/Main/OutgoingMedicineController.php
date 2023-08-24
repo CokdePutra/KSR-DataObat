@@ -37,7 +37,8 @@ class OutgoingMedicineController extends Controller
                         ->orWhere('is_active', true);
                 })
                 ->whereHas('batches', function ($query) {
-                    $query->where('is_active', true);
+                    $query->where('is_active', true)
+                            ->where('stock', '>', 0);
                 })
                 ->with(['category', 'batches'])
                 ->where('is_active', true)
@@ -52,7 +53,8 @@ class OutgoingMedicineController extends Controller
             DB::beginTransaction();
             $outgoingMedicine = OutgoingMedicine::create([
                 'description' => $request->description,
-                'outgoing_date' => $request->out_date
+                'outgoing_date' => $request->out_date,
+                'user_id' => auth()->user()->id,
             ]);
 
             foreach($request->batch_number as $key => $value) {
@@ -65,7 +67,7 @@ class OutgoingMedicineController extends Controller
                 ]);
 
                 $batch->update([
-                    'quantity' => $batch->quantity - $request->quantity[$key]
+                    'stock' => $batch->stock - $request->quantity[$key]
                 ]);
             }
 
@@ -84,5 +86,12 @@ class OutgoingMedicineController extends Controller
                 'title' => 'Failed'
             ])->withInput();
         }
+    }
+
+    public function detail($outgoingId)
+    {
+        $outgoingMedicineDetail = OutgoingMedicineDetail::with(['medicine', 'batch'])->where('outgoing_medicine_id', $outgoingId)->get();
+
+        return response()->json($outgoingMedicineDetail);
     }
 }

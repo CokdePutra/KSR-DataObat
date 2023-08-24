@@ -23,7 +23,7 @@ class MedicineController extends Controller
     {
         $units = [
             // 'Strip', 'Botol', 'Kotak', 'Dos', 'Satuan', 'Tube', 'Ampul', 'Vial'
-            'Botol', 'Tablet', 'Strip', 'Sachet', 'Kapsul', 'Box', 'Lainnya'
+            'Botol', 'Tablet', 'Strip', 'Sachet', 'Kapsul', 'Box'
         ];
         $categories = Category::where('is_active', true)->pluck('name', 'id')->prepend('Choose Category...', '')->toArray();
         return view('main.medicine.create', compact('categories', 'units'));
@@ -33,6 +33,7 @@ class MedicineController extends Controller
     {
         try {
             $data = [
+                'user_id' => auth()->user()->id,
                 'category_id' => $request->category_id,
                 'name' => $request->name,
                 'medicine_code' => $request->medicine_code,

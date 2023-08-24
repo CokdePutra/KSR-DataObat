@@ -15,7 +15,7 @@ class OutgoingMedicine extends Model
     public $incrementing = false;
     protected $keyType = 'string';
     protected $fillable = [
-        'outgoing_date', 'description', 'is_active',
+        'outgoing_date', 'user_id', 'description', 'is_active',
     ];
 
     protected static function boot()

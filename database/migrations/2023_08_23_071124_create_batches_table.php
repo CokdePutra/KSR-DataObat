@@ -17,7 +17,10 @@ return new class extends Migration
             $table->foreign('medicine_id')->references('id')->on('medicines')->onDelete('cascade');
             $table->string('batch_number', 30);
             $table->integer('quantity');
+            $table->integer('stock');
             $table->date('expired_date');
+            $table->string('user_id', 50);
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

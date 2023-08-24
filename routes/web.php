@@ -17,6 +17,8 @@ Route::namespace('Main')->middleware('auth')->group(function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
     Route::controller(DashboardController::class)->as('dashboard.')->prefix('dashboard')->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::post('/chart-in-out-medicines', 'chartInOutMedicines')->name('chart.inout.medicines');
+        Route::post('/chart-in-out-by-category', 'pieChartInOutByCategory')->name('chart.inout.category');
     });
 
     Route::controller(CategoryController::class)
@@ -61,6 +63,7 @@ Route::namespace('Main')->middleware('auth')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::get('/detail/{id}', 'detail')->name('detail');
             Route::get('/medicine-search/{keyword}', 'medicineSearch')->name('medicine.search');
             Route::post('/store', 'store')->name('store');
             Route::post('/update', 'update')->name('update');

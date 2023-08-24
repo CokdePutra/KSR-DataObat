@@ -10,28 +10,28 @@
             </li>
             <li class="nav-item {{ Str::contains(request()->url(), 'category') ? 'active' : '' }}">
                 <a class="nav-item-hold" href="{{ route('category.index') }}">
-                    <i class="nav-icon i-Administrator"></i>
+                    <i class="nav-icon i-Book"></i>
                     <span class="nav-text">Category</span>
                 </a>
                 <div class="triangle"></div>
             </li>
             <li class="nav-item {{ Str::contains(request()->url(), 'medicine') ? 'active' : '' }}">
                 <a class="nav-item-hold" href="{{ route('medicine.index') }}">
-                    <i class="nav-icon i-Administrator"></i>
+                    <i class="nav-icon i-Medicine-2"></i>
                     <span class="nav-text">Medicine</span>
                 </a>
                 <div class="triangle"></div>
             </li>
             <li class="nav-item {{ Str::contains(request()->url(), 'batch') ? 'active' : '' }}">
                 <a class="nav-item-hold" href="{{ route('batch.index') }}">
-                    <i class="nav-icon i-Administrator"></i>
+                    <i class="nav-icon i-Bar-Chart-3"></i>
                     <span class="nav-text">Batch</span>
                 </a>
                 <div class="triangle"></div>
             </li>
             <li class="nav-item {{ Str::contains(request()->url(), 'outgoing') ? 'active' : '' }}">
                 <a class="nav-item-hold" href="{{route('outgoing.index')}}">
-                    <i class="nav-icon i-Administrator"></i>
+                    <i class="nav-icon i-Medicine-3"></i>
                     <span class="nav-text">Outgoing</span>
                 </a>
                 <div class="triangle"></div>

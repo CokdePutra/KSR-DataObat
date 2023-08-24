@@ -155,6 +155,7 @@
                         '<td><button type=button class="btn btn-danger btn-remove btn-rounded" data-batch-number="' +
                         cart
                         .batch_number + '"><i class="fa fa-trash"></i></button></td>';
+                        list += '</tr>';
                 });
             }
 

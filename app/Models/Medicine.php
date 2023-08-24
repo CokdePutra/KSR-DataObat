@@ -15,7 +15,7 @@ class Medicine extends Model
     public $incrementing = false;
     protected $keyType = 'string';
     protected $fillable = [
-        'category_id', 'medicine_code', 'name', 'unit', 'image', 'description', 'is_active'
+        'category_id', 'user_id', 'medicine_code', 'name', 'unit', 'image', 'description', 'is_active'
     ];
 
     protected static function boot()
