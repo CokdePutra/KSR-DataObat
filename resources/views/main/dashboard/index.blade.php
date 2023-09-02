@@ -10,8 +10,8 @@
 
 @section('content')
     <div class="row">
-        <div class="col-8"></div>
-        <div class="col-4">
+        <div class="col-lg-8 col-md-6 col-sm-6"></div>
+        <div class="col-lg-4 col-md-6 col-sm-6">
             <div class="row">
                 <div class="col-5">
                     <div class="form-group">
@@ -249,33 +249,34 @@
                         var outgoingTotal = 0;
 
                         // Generate a dynamic color palette using Chroma.js
-                        var barColors = chroma.scale(['#9F91CC', '#3D246C']).mode('lch').colors(2);
+                        var barColors = chroma.scale(['#4D2DB7', '#94A684']).mode('lch').colors(2);
 
-                        Object.keys(response).forEach(function(year) {
-                            var months = Object.keys(response[year]);
-                            var totalIncoming =0; // Initialize the total incoming value for the current year
-                            var totalOutgoing =0; // Initialize the total incoming value for the current year
+                        // Loop through the response data
+                        for (var year in response) {
+                            for (var month = 1; month <= 12; month++) {
+                                var dataForMonth = response[year][month.toString()];
 
-                            months.forEach(function(month) {
-                                // Calculate incoming value for the current month
-                                var incoming = response[year][month]['incoming'];
-                                var outgoing = response[year][month]['outgoing'];
+                                if (dataForMonth) {
+                                    var incoming = dataForMonth.incoming || 0;
+                                    var outgoing = dataForMonth.outgoing || 0;
 
-                                totalIncoming += parseInt(incoming); // Accumulate incoming value for the current year
-                                totalOutgoing += parseInt(outgoing); // Accumulate incoming value for the current year
+                                    incomingTotal += parseInt(incoming);
+                                    outgoingTotal += parseInt(outgoing);
 
-                                // Push values to respective arrays
-                                incomingData.push(incoming);
-                                outgoingData.push(outgoing);
-                            });
+                                    xAxisData.push(monthNames[month]);
+                                    incomingData.push(incoming);
+                                    outgoingData.push(outgoing);
+                                } else {
+                                    // Handle missing data here, you can set it to 0 or a default value
+                                    xAxisData.push(monthNames[month]);
+                                    incomingData.push(0);
+                                    outgoingData.push(0);
+                                }
+                            }
+                        }
 
-                            // Store the total incoming value for the current year
-                            incomingTotal = totalIncoming;
-                            outgoingTotal = totalOutgoing;
-                        });
-
-                        $('.incoming-total').text(incomingTotal)
-                        $('.outgoing-total').text(outgoingTotal)
+                        $('.incoming-total').text(incomingTotal);
+                        $('.outgoing-total').text(outgoingTotal);
 
                         // Initialize ECharts instance
                         var chart = echarts.init(document.getElementById('barChart'));
@@ -288,7 +289,11 @@
                             },
                             xAxis: {
                                 data: xAxisData,
-                                type: 'category'
+                                type: 'category',
+                                axisLabel: {
+                                    rotate: 45, // Rotate x-axis labels for better readability if needed
+                                    interval: 0 // Show all labels
+                                }
                             },
                             yAxis: {},
                             series: [{
@@ -296,7 +301,8 @@
                                     type: 'bar',
                                     data: incomingData,
                                     itemStyle: {
-                                        color: barColors[0] // Apply the first color to the Incoming bars
+                                        color: barColors[
+                                            0] // Apply the first color to the Incoming bars
                                     }
                                 },
                                 {
@@ -304,7 +310,8 @@
                                     type: 'bar',
                                     data: outgoingData,
                                     itemStyle: {
-                                        color: barColors[1] // Apply the second color to the Outgoing bars
+                                        color: barColors[
+                                            1] // Apply the second color to the Outgoing bars
                                     }
                                 }
                             ]
@@ -333,7 +340,8 @@
                         $('.stock-total').text(response.stock)
 
                         // Generate a dynamic color palette using Chroma.js
-                        var pieColors = chroma.scale(['#FF7F50', '#3398DB']).mode('lch').colors(response.data.length);
+                        var pieColors = chroma.scale(['#FF7F50', '#3398DB']).mode('lch').colors(response
+                            .data.length);
 
                         // Prepare data for the chart
                         var chartData = response.data.map(function(item, index) {
