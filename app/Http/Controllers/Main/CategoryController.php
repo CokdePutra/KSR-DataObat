@@ -19,6 +19,17 @@ class CategoryController extends Controller
         return view('main.category.create');
     }
 
+    public function print()
+    {
+        $categories = Category::all();
+
+        $view = [
+            'data' => view('main.category.print', compact('categories'))->render(),
+        ];
+
+        return response()->json($view);
+    }
+
     public function store(CategoryRequest $request)
     {
         try {

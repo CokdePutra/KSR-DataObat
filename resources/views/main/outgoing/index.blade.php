@@ -12,7 +12,7 @@
                         <div class="col-6">
                             Data Medicine Out
                         </div>
-                        {{-- @can('petugas') --}}
+                        @can('operator')
                         <div class="col-6 d-flex align-items-center">
                             <div class="m-auto"></div>
                             <a href="{{ route('outgoing.create') }}">
@@ -21,7 +21,7 @@
                                 </button>
                             </a>
                         </div>
-                        {{-- @endcan --}}
+                        @endcan
                     </div>
                 </div>
                 <div class="card-body">
@@ -31,7 +31,7 @@
                             <th>Out Date</th>
                             <th>Description</th>
                             {{-- <th>Status</th> --}}
-                            {{-- @can('petugas') --}}
+                            {{-- @can('operator') --}}
                             <th>Action</th>
                             {{-- @endcan --}}
                         </thead>
@@ -43,9 +43,9 @@
                                     <td>{{ $outgoingMedicine->description }}</td>
                                     {{-- <td>
                                         <span
-                                            class="badge {{ $outgoingMedicine->is_active == true ? 'badge-primary' : 'badge-danger' }}">{{ $outgoingMedicine->is_active == true ? 'Active' : 'Non-Active' }}</span>
+                                            class="badge {{ $outgoingMedicine->is_active == true ? 'badge-primary' : 'badge-danger' }}">{{ $outgoingMedicine->is_active == true ? 'Active' : 'Inactive' }}</span>
                                     </td> --}}
-                                    {{-- @can('petugas') --}}
+                                    {{-- @can('operator') --}}
                                     <td>
                                         <a href="{{ route('outgoing.edit', $outgoingMedicine->id) }}">
                                             <button class="btn btn-edit btn-primary">

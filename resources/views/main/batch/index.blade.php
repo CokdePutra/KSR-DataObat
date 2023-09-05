@@ -12,7 +12,7 @@
                         <div class="col-6">
                             Data Medicine Batch
                         </div>
-                        {{-- @can('petugas') --}}
+                        @can('operator')
                             <div class="col-6 d-flex align-items-center">
                                 <div class="m-auto"></div>
                                 <a href="{{route('batch.create')}}">
@@ -21,7 +21,7 @@
                                     </button>
                                 </a>
                             </div>
-                        {{-- @endcan --}}
+                        @endcan
                     </div>
                 </div>
                 <div class="card-body">
@@ -33,9 +33,9 @@
                             <th>Quantity</th>
                             <th>Expired Date</th>
                             <th>Status</th>
-                            {{-- @can('petugas') --}}
+                            @can('operator')
                             <th>Action</th>
-                            {{-- @endcan --}}
+                            @endcan
                         </thead>
                         <tbody>
                             @foreach ($batches as $batch)
@@ -47,9 +47,9 @@
                                     <td>{{ date_format(date_create($batch->expired_date), 'd-m-Y') }}</td>
                                     <td>
                                         <span
-                                            class="badge {{ $batch->is_active == true ? 'badge-primary' : 'badge-danger' }}">{{ $batch->is_active == true ? 'Active' : 'Non-Active' }}</span>
+                                            class="badge {{ $batch->is_active == true ? 'badge-primary' : 'badge-danger' }}">{{ $batch->is_active == true ? 'Active' : 'Inactive' }}</span>
                                     </td>
-                                    {{-- @can('petugas') --}}
+                                    @can('operator')
                                         <td>
                                             <a href="{{route('batch.edit', $batch->id)}}">
                                                 <button class="btn btn-edit btn-primary">
@@ -57,7 +57,7 @@
                                                 </button>
                                             </a>
                                         </td>
-                                    {{-- @endcan --}}
+                                    @endcan
                                 </tr>
                             @endforeach
                         </tbody>

@@ -24,6 +24,20 @@ class OutgoingMedicineController extends Controller
         return view('main.outgoing.create');
     }
 
+    public function edit($id)
+    {
+        $outgoingMedicines = OutgoingMedicine::with('details')->where('id', $id)->firstOrFail();
+        return view('main.outgoing.edit')->with([
+            'outgoingMedicines' => $outgoingMedicines
+        ]);
+    }
+
+    public function medicineOnDatabase($id) {
+        $outgoing = OutgoingMedicine::with('details.batch.medicine')->where('id', $id)->firstOrFail();
+
+        return response()->json($outgoing);
+    }
+
     public function medicineSearch($keyword)
     {
         $category = explode('-', $keyword)[0];
@@ -79,6 +93,51 @@ class OutgoingMedicineController extends Controller
             ]);
         } catch (\Exception $e) {
             DB::rollback();
+            return redirect()->back()->with([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                // 'message' => 'Something went wrong',
+                'title' => 'Failed'
+            ])->withInput();
+        }
+    }
+
+    public function update(OutgoingMedicineRequest $request)
+    {
+        // dd($request->all());
+        try {
+            $outgoingMedicineDetail = OutgoingMedicineDetail::where('outgoing_medicine_id',$request->outgoing_medicine_id)->get();
+            foreach ($outgoingMedicineDetail as $detail) {
+                $batch = Batch::where('id', $detail->batch_id)->first();
+                $batch->update([
+                    'stock' => $batch->stock + $detail->quantity
+                ]);
+            }
+
+            // delete data before update
+            OutgoingMedicineDetail::where('outgoing_medicine_id', $request->outgoing_medicine_id)->delete();
+
+
+            foreach($request->batch_number as $key => $value) {
+                $batch = Batch::where('batch_number', $value)->first();
+                OutgoingMedicineDetail::create([
+                    'outgoing_medicine_id' => $request->outgoing_medicine_id,
+                    'medicine_id' => $batch->medicine_id,
+                    'batch_id' => $batch->id,
+                    'quantity' => $request->quantity[$key]
+                ]);
+
+                $batch->update([
+                    'stock' => $batch->stock - $request->quantity[$key]
+                ]);
+            }
+
+            return redirect()->route('outgoing.index')->with([
+                'status' => 'success',
+                'message' => 'Data saved successfully',
+                'title' => 'Success'
+            ]);
+        } catch (\Exception $e) {
             return redirect()->back()->with([
                 'status' => 'error',
                 'message' => $e->getMessage(),

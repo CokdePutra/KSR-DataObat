@@ -12,7 +12,7 @@
                         <div class="col-6">
                             Data Medicine
                         </div>
-                        {{-- @can('petugas') --}}
+                        @can('operator')
                             <div class="col-6 d-flex align-items-center">
                                 <div class="m-auto"></div>
                                 <a href="{{route('medicine.create')}}">
@@ -21,7 +21,7 @@
                                     </button>
                                 </a>
                             </div>
-                        {{-- @endcan --}}
+                        @endcan
                     </div>
                 </div>
                 <div class="card-body">
@@ -35,9 +35,9 @@
                             {{-- <th>Stock</th> --}}
                             {{-- <th>Expired Date</th> --}}
                             <th>Status</th>
-                            {{-- @can('petugas') --}}
+                            @can('operator')
                             <th>Action</th>
-                            {{-- @endcan --}}
+                            @endcan
                         </thead>
                         <tbody>
                             @foreach ($medicines as $medicine)
@@ -53,9 +53,9 @@
                                     {{-- <td>{{ date_format(date_create($medicine->expired_date), 'd-m-Y') }}</td> --}}
                                     <td>
                                         <span
-                                            class="badge {{ $medicine->is_active == true ? 'badge-primary' : 'badge-danger' }}">{{ $medicine->is_active == true ? 'Active' : 'Non-Active' }}</span>
+                                            class="badge {{ $medicine->is_active == true ? 'badge-primary' : 'badge-danger' }}">{{ $medicine->is_active == true ? 'Active' : 'Inactive' }}</span>
                                     </td>
-                                    {{-- @can('petugas') --}}
+                                    @can('operator')
                                         <td>
                                             <a href="{{route('medicine.edit', $medicine->id)}}">
                                                 <button class="btn btn-edit btn-primary">
@@ -63,7 +63,7 @@
                                                 </button>
                                             </a>
                                         </td>
-                                    {{-- @endcan --}}
+                                    @endcan
                                 </tr>
                             @endforeach
                         </tbody>

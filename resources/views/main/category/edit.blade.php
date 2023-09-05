@@ -36,7 +36,7 @@
                             <label for="status">Status</label>
                             <select name="status" id="status" class="form-control">
                                 <option value="1" {{$category->is_active == true ? 'selected' : ''}}>Active</option>
-                                <option value="0" {{$category->is_active == false ? 'selected' : ''}}>Non-Active</option>
+                                <option value="0" {{$category->is_active == false ? 'selected' : ''}}>Inactive</option>
                             </select>
                         </div>
                     </div>

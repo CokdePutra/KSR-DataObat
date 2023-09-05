@@ -26,4 +26,9 @@ class OutgoingMedicine extends Model
             $model->id = str_replace('-','',Uuid::uuid4()->getHex());
         });
     }
+
+    public function details()
+    {
+        return $this->hasMany(OutgoingMedicineDetail::class);
+    }
 }

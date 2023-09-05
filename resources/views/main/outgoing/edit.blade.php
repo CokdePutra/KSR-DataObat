@@ -4,7 +4,7 @@
 @section('page-sub-title', 'Data')
 
 @push('css')
-<meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 @endpush
 
 @section('content')
@@ -28,18 +28,20 @@
                         {{-- @endcan --}}
                     </div>
                 </div>
-                <form action="{{ route('outgoing.store') }}" method="POST" id="form">
+                <form action="{{ route('outgoing.update') }}" method="POST" id="form">
                     @csrf
                     <div class="card-body">
                         <div class="form-group">
+                            <input type="hidden" name="outgoing_medicine_id" id="outgoing_medicine_id" class="form-control" value="{{$outgoingMedicines->id}}">
                             <label for="out_date">Medicine Out Date</label>
                             <input type="date" class="form-control" name="out_date" id="out_date"
-                                placeholder="enter medicine out date" autocomplete="off" autofocus>
+                                placeholder="enter medicine out date" autocomplete="off"
+                                value="{{ $outgoingMedicines->outgoing_date }}">
                         </div>
                         <div class="form-group">
                             <label for="description">Description</label>
                             <textarea class="form-control" rows="5" name="description" id="description" placeholder="enter description"
-                                autocomplete="off"></textarea>
+                                autocomplete="off">{{ $outgoingMedicines->description }}</textarea>
                         </div>
                         <div class="form-group">
                             <button type="button" class="btn btn-primary btn-search-medicine float-right mt-2 mb-2">
@@ -56,7 +58,21 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
+                                <tbody>
+                                    {{-- @foreach ($outgoingMedicines->details as $details)
+                                        <tr>
+                                            <td>{{$loop->iteration}}</td>
+                                            <td>{{$details->medicine->name}}</td>
+                                            <td>{{$details->batch->batch_number}}</td>
+                                            <td>{{$details->batch->expired_date}}</td>
+                                            <td>
+                                                <input type=text class="form-control text-center" data-batch-number="{{$details->batch->batch_number}}" id="quantity" name="quantity[]" value="{{$details->quantity}}">
+                                                <input type=hidden name="batch_number[]" value="{{$details->batch->batch_number}}">
+                                            </td>
+                                            <td>{{$loop->iteration}}</td>
+                                        </tr>
+                                    @endforeach --}}
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -124,13 +140,58 @@
     {!! JsValidator::formRequest('App\Http\Requests\OutgoingMedicineRequest', '#form') !!}
 
     <script>
-        function getCart() {
+        function getDataOnDatabase(id) {
+            let list = '';
+
+            var cart = JSON.parse(localStorage.getItem('editCart')) || [];
+            let existingBatch = cart.find(item => item.batch_number === batchNumber);
+
+            $.get("/outgoing/medicine-database/" + id, function(data) {
+                $.each(data.details, function(index, value) {
+                    list += '<tr>';
+                    list += '<td>' + (index + 1) + '</td>';
+                    list += '<td>' + value.batch.medicine.name + '</td>';
+                    list += '<td>' + value.batch.batch_number + '</td>';
+                    list += '<td>' + value.batch.expired_date + '</td>';
+                    list += '<td>';
+                    list +=
+                        '<input type=text class="form-control text-center" data-batch-number="' +
+                        value.batch.batch_number + '" id="quantity" name="quantity[]" value="' + value
+                        .quantity + '">';
+                    list += '<input type=hidden name="batch_number[]" value="' + value.batch.batch_number +
+                        '">'
+                    list += '</td>';
+                    list +=
+                        '<td><button type=button class="btn btn-danger btn-remove btn-rounded" data-batch-number="' +
+                        value.batch.batch_number + '"><i class="fa fa-trash"></i></button></td>';
+                    list += '</tr>';
+
+                    // add to local storage
+                    if (!existingBatch) {
+                        var newData = {
+                            medicine_name: value.batch.medicine.name,
+                            batch_number: value.batch.batch_number,
+                            expired_date: value.batch.expired_date,
+                            stock: value.batch.stock,
+                            quantity: value.quantity,
+                        };
+                        cart.push(newData);
+
+                        localStorage.setItem('editCart', JSON.stringify(cart));
+                    }
+                });
+
+                $('#medicineTable tbody').append(list);
+            });
+        }
+
+        function getDataOnLocalStorage() {
             $('#medicineTable tbody').empty()
             let list = '';
-            if (!localStorage.getItem('cart')) {
+            if (!localStorage.getItem('editCart')) {
                 list += '<tr><td class=text-center colspan=6>No data</td></tr>';
             } else {
-                $.each(JSON.parse(localStorage.getItem('cart')), function(index, cart) {
+                $.each(JSON.parse(localStorage.getItem('editCart')), function(index, cart) {
                     list += '<tr>';
                     list += '<td>' + (index + 1) + '</td>';
                     list += '<td>' + cart.medicine_name + '</td>';
@@ -143,17 +204,18 @@
                     list += '</td>';
                     list +=
                         '<td><button type=button class="btn btn-danger btn-remove btn-rounded" data-batch-number="' +
-                        cart
-                        .batch_number + '"><i class="fa fa-trash"></i></button></td>';
+                        cart.batch_number + '"><i class="fa fa-trash"></i></button></td>';
                         list += '</tr>';
                 });
             }
 
             $('#medicineTable tbody').append(list);
         }
+
         $(document).ready(function() {
-            localStorage.clear('cart')
-            getCart();
+            localStorage.clear();
+            getDataOnDatabase("{{ $outgoingMedicines->id }}")
+
             @if (session('status'))
                 Swal.fire(
                     "{{ session('title') }}",
@@ -207,8 +269,8 @@
                                 list += '</div>';
                                 list += '<div class="col-5">';
                                 list +=
-                                    '<button type=button class="btn btn-success text-white btn-add-medicine" data-batch-quantity="' +
-                                    batch.quantity + '" data-expired-date="' + batch
+                                    '<button type=button class="btn btn-success text-white btn-add-medicine" data-batch-stock="' +
+                                    batch.stock + '" data-expired-date="' + batch
                                     .expired_date + '" data-batch-number="' + batch
                                     .batch_number + '" data-medicine-name="' +
                                     medicine.name +
@@ -231,7 +293,7 @@
                 let expiredDate = $(this).data('expired-date');
                 let batchStock = $(this).data('batch-stock');
 
-                var cart = JSON.parse(localStorage.getItem('cart')) || [];
+                var cart = JSON.parse(localStorage.getItem('editCart')) || [];
 
                 let existingBatch = cart.find(item => item.batch_number === batchNumber);
                 if (!existingBatch) {
@@ -244,8 +306,8 @@
                     };
                     cart.push(newData);
 
-                    localStorage.setItem('cart', JSON.stringify(cart));
-                    getCart();
+                    localStorage.setItem('editCart', JSON.stringify(cart));
+                    getDataOnLocalStorage();
 
                     Swal.fire(
                         "Success",
@@ -274,10 +336,10 @@
                     confirmButtonText: "Yes, Delete!",
                 }).then((result) => {
                     if (result.value) {
-                        var cart = JSON.parse(localStorage.getItem('cart')) || [];
+                        var cart = JSON.parse(localStorage.getItem('editCart')) || [];
                         cart = cart.filter(item => item.batch_number !== batchNumber)
 
-                        localStorage.setItem('cart', JSON.stringify(cart))
+                        localStorage.setItem('editCart', JSON.stringify(cart))
 
                         Swal.fire(
                             "Success",
@@ -285,7 +347,7 @@
                             "success"
                         );
 
-                        getCart();
+                        getDataOnLocalStorage();
                     }
                 });
             });
@@ -294,51 +356,28 @@
                 let value = $(this).val();
                 let batchNumber = $(this).data('batch-number');
 
-                cart = JSON.parse(localStorage.getItem('cart')) || [];
+                console.log(batchNumber)
+
+                cart = JSON.parse(localStorage.getItem('editCart')) || [];
                 let findData = cart.find(item => item.batch_number === batchNumber);
                 if (findData) {
                     if (findData.stock >= value) {
                         findData.quantity = value;
 
-                        localStorage.setItem('cart', JSON.stringify(cart))
+                        localStorage.setItem('editCart', JSON.stringify(cart))
 
                         Swal.fire(
                             "Success",
                             "Quantity updated",
                             "success"
                         );
-                        getCart()
+                        // getDataOnLocalStorage()
                     } else {
                         Swal.fire("Error", "Stock not enough!", "error");
-                        getCart();
                     }
+                    getDataOnLocalStorage();
                 }
             });
-            // $('#form').submit(function(e) {
-            //     // e.preventDefault();
-            //     $.ajaxSetup({
-            //         headers: {
-            //             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-            //         },
-            //     });
-            //     let form = $("#form")[0];
-            //     let data = new FormData(form);
-            //     data.append('batch', JSON.parse(localStorage.getItem('cart')))
-            //     $.ajax({
-            //         type: "POST",
-            //         url: "{{route('outgoing.store')}}",
-            //         data: data,
-            //         processData: false,
-            //         contentType: false,
-            //         cache: false,
-            //         success: function(response) {
-            //             //
-            //         },
-            //         error: function(error) {
-            //             console.log(error)
-            //         },
-            //     });
-            // });
         });
     </script>
 @endpush
