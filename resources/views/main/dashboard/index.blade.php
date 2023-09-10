@@ -16,14 +16,14 @@
                 <div class="col-5">
                     <div class="form-group">
                         {{-- <label for="awal" class="col-form-label">Tanggal Awal</label> --}}
-                        <input type="date" class="form-control" id="start" name="start" value="{{ date('Y-m-d') }}">
+                        <input type="date" class="form-control" id="start" name="start" value="{{ date('Y-m-d') }}" max="{{date('Y-m-d')}}">
                     </div>
                 </div>
                 <div class="col-5">
                     <div class="form-group">
                         {{-- <label for="akhir" class="col-form-label">Tanggal Akhir</label> --}}
                         <input type="date" class="form-control" id="end" name="end"
-                            value="{{ date('Y-m-d') }}">
+                            value="{{ date('Y-m-d') }}" max="{{date('Y-m-d')}}">
                     </div>
                 </div>
                 <div class="col-2">

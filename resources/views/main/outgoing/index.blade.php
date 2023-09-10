@@ -20,11 +20,11 @@
                                     <i class="nav-icon fa fa-plus font-weight-bold"></i> Add
                                 </button>
                             </a>
-                            <a href="{{ route('outgoing.print') }}">
-                                <button type="button" class="btn btn-outline-success">
-                                    <i class="nav-icon fa fa-print font-weight-bold"></i> Print
-                                </button>
-                            </a>
+                            {{-- <a href="{{ route('outgoing.print') }}"> --}}
+                            <button type="button" class="btn btn-outline-success ml-2 btn-print">
+                                <i class="nav-icon fa fa-print font-weight-bold"></i> Print
+                            </button>
+                            {{-- </a> --}}
                         </div>
                         @endcan
                     </div>
@@ -101,6 +101,40 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalPrint" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Print Report</h5>
+                    <button type="button" class="btn btn-danger btn-rounded" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-times-circle"></i>
+                    </button>
+                </div>
+                <form action="{{route('outgoing.print')}}" method="POST">
+                @csrf
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="start">Start Date</label>
+                            <input type="date" name="start_date" id="start_date" class="form-control" value="{{date_format(date_create(now()), 'Y-m-d')}}" max="{{date('Y-m-d')}}">
+                        </div>
+                        <div class="col-6">
+                            <label for="end">End Date</label>
+                            <input type="date" name="end_date" id="end_date" class="form-control" value="{{date_format(date_create(now()), 'Y-m-d')}}" max="{{date('Y-m-d')}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary pull-right" type="submit">Print</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 @endsection
 
 @push('script')
@@ -180,6 +214,10 @@
                     $('#outgoingTable tbody').append(list)
                 });
             });
+
+            $('body').on('click', '.btn-print', function() {
+                $('#modalPrint').modal('show');
+            })
         });
     </script>
 @endpush

@@ -34,7 +34,7 @@
                         <div class="form-group">
                             <label for="out_date">Medicine Out Date</label>
                             <input type="date" class="form-control" name="out_date" id="out_date"
-                                placeholder="enter medicine out date" autocomplete="off" autofocus>
+                                placeholder="enter medicine out date" autocomplete="off" autofocus max="{{date('Y-m-d')}}">
                         </div>
                         <div class="form-group">
                             <label for="description">Description</label>
@@ -207,7 +207,7 @@
                                 list += '</div>';
                                 list += '<div class="col-5">';
                                 list +=
-                                    '<button type=button class="btn btn-success text-white btn-add-medicine" data-batch-quantity="' +
+                                    '<button type=button class="btn btn-success text-white btn-add-medicine" data-batch-stock="'+batch.stock+'" data-batch-quantity="' +
                                     batch.quantity + '" data-expired-date="' + batch
                                     .expired_date + '" data-batch-number="' + batch
                                     .batch_number + '" data-medicine-name="' +

@@ -36,7 +36,7 @@
                             <label for="out_date">Medicine Out Date</label>
                             <input type="date" class="form-control" name="out_date" id="out_date"
                                 placeholder="enter medicine out date" autocomplete="off"
-                                value="{{ $outgoingMedicines->outgoing_date }}">
+                                value="{{ $outgoingMedicines->outgoing_date }}" max="{{date('Y-m-d')}}">
                         </div>
                         <div class="form-group">
                             <label for="description">Description</label>

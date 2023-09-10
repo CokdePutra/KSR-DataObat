@@ -135,8 +135,8 @@ class DashboardController extends Controller
             ];
         }
 
-        $stock = Batch::whereBetween('created_at', [$start, $end])
-                        ->where('expired_date', '>', now())
+        // $stock = Batch::whereBetween('created_at', [$start, $end])
+        $stock = Batch::where('expired_date', '>', now())
                         ->sum('stock');
 
         return response()->json([

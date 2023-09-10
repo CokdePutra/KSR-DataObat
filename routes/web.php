@@ -63,7 +63,7 @@ Route::namespace('Main')->middleware('auth')->group(function () {
             Route::get('/medicine-database/{id}', 'medicineOnDatabase')->name('medicine.database');
             Route::post('/store', 'store')->name('store')->middleware('checkRole:operator');
             Route::post('/update', 'update')->name('update');
-            Route::get('/print', 'print')->name('print');
+            Route::post('/print', 'print')->name('print');
         });
 });
 

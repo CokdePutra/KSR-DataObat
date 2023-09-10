@@ -108,9 +108,9 @@
 </head>
 
 <body>
-    <section class="main-pd-wrapper" style="width: 1000px;">
+    <section class="main-pd-wrapper" style="width: 100%;">
         <div>
-        {{-- <div style="display: table-header-group"> --}}
+            {{-- <div style="display: table-header-group"> --}}
             <h4 style="text-align: center; margin: 0">
                 <b>Medicines Outgoing Report</b>
             </h4>
@@ -126,7 +126,7 @@
                   font-size: 14px;
                   color: #4a4a4a;
                 ">
-                            {{-- <img src="{{ asset('assets/images/logo.png') }}" width="150px"> --}}
+                            <img src="{{ public_path('assets/images/logo.png') }}" width="150px">
 
                             <p style="font-weight: bold; margin-top: 15px">
                                 ITB STIKOM BALI - KSR
@@ -148,7 +148,10 @@
                             <h4 style="margin-top: 5px; margin-bottom: 5px">
                                 Report generate to list all outgoing medicines
                             </h4>
-                            <p>The "Generate Report: Outgoing Medicines" report is a comprehensive document that provides a detailed overview of all medicines dispensed or distributed during a specified time period. This report serves as a critical tool for healthcare administrators, pharmacists, and medical professionals to monitor medication usage</p>
+                            <p>The "Generate Report: Outgoing Medicines" report is a comprehensive document that
+                                provides a detailed overview of all medicines dispensed or distributed during a
+                                specified time period. This report serves as a critical tool for healthcare
+                                administrators, pharmacists, and medical professionals to monitor medication usage</p>
                             {{-- <p style="font-size: 14px">
                                 Aakriti Rathore,B-268, west vinod nagar, street no.2,near
                                 press apartment bus stand, Patparganj, IP
@@ -163,7 +166,7 @@
         </div>
         <table class="table table-bordered h4-14" style="width: 100%; -fs-table-paginate: paginate; margin-top: 15px">
             <thead>
-            {{-- <thead style="display: table-header-group"> --}}
+                {{-- <thead style="display: table-header-group"> --}}
                 <tr
                     style="
               margin: 0;
@@ -183,19 +186,20 @@
                     margin-top: 7px;
                   ">
                                 E-Report Code:
-                                <span style="color: #00bb07">Code 123</span><br />
+                                <span style="color: #00bb07">Code {{generateBatchNumber('REPORT')}}</span><br />
                             </p>
                         </h3>
                     </td>
                     <td colspan="5">
-                        <p>Print Date:- {{now()}}</p>
-                        <p style="margin: 5px 0">Filter Date:- {{date_format(date_create(now()), 'Y-m-d')}} until {{date_format(date_create(now()), 'Y-m-d')}}</p>
+                        <p>Print Date:- {{ now() }}</p>
+                        <p style="margin: 5px 0">Filter Date:- {{ $start }} until
+                            {{ $end }}</p>
                     </td>
                     <td colspan="4" style="width: 300px">
                         <h4 style="margin: 0">Print By:</h4>
                         <p>
-                            {{auth()->user()->name}},<br />
-                            {{ucfirst(auth()->user()->role)}} - {{auth()->user()->phone}}
+                            {{ auth()->user()->name }},<br />
+                            {{ ucfirst(auth()->user()->role) }} - {{ auth()->user()->phone }}
                         </p>
                     </td>
                 </tr>
@@ -216,14 +220,13 @@
                             Category
                         </h4>
                     </th>
-                    <th style="width: 60px">
-                        <h4>Batch<br />
-                            Number
+                    <th style="width: 60px" colspan="2">
+                        <h4>Batch Number
                         </h4>
                     </th>
-                    <th style="width: 80px">
+                    {{-- <th style="width: 80px">
                         <h4>Stock</h4>
-                    </th>
+                    </th> --}}
 
                     <th style="width: 80px">
                         <h4>
@@ -241,30 +244,46 @@
                             Unit
                         </h4>
                     </th>
-                    <th style="width: 80px" colspan="2">
+                    <th colspan="4" style="width: 300px">
                         <h4>
                             Description
                         </h4>
                     </th>
-                    {{-- <th style="width: 120px">
-                        <h4>TOTAL Value</h4>
-                    </th> --}}
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $total = 0;
+                @endphp
+                @forelse ($data as $key => $outgoing)
+                @foreach ($outgoing->details as $index => $detail)
                 <tr>
-                    <td>01</td>
-                    <td>Milkfood Ghee Tp 980Ml</td>
-                    <td>40590200</td>
-                    <td>100</td>
-                    <td>1</td>
-                    <td>550.00</td>
-                    <td>409.82</td>
-                    <td>409.82</td>
-                    <td>12.00</td>
-                    <td>24.59</td>
-                    {{-- <td>459.00</td> --}}
+                    @php
+                        $total += $detail->quantity;
+                    @endphp
+                    @if ($index === 0)
+                    <td rowspan="{{count($outgoing->details)}}">{{$key+1}}</td>
+                    @endif
+                    <td>{{$detail->medicine->name}}</td>
+                    <td>{{$detail->medicine->medicine_code}}</td>
+                    <td>{{$detail->medicine->category->name}}</td>
+                    <td colspan="2">{{$detail->batch->batch_number}}</td>
+                    {{-- <td>{{$detail->batch->stock}}</td> --}}
+                    <td>{{$detail->batch->expired_date}}</td>
+                    <td>{{$detail->quantity}}</td>
+                    <td>{{$detail->medicine->unit}}</td>
+                    @if ($index === 0)
+                    <td rowspan="{{count($outgoing->details)}}" colspan="4">{{$outgoing->description}}</td>
+                    @endif
                 </tr>
+                @endforeach
+                @empty
+                <tr>
+                    <td colspan="13" style="text-align: center">
+                        <h3>No data</h3>
+                    </td>
+                </tr>
+                @endforelse
             </tbody>
             {{-- <tfoot></tfoot> --}}
         </table>
@@ -275,17 +294,17 @@
                     Medicines Outgoing Total
                 </th>
                 <td style="vertical-align: top; color: #000">
-                    <b>97</b>
+                    <b>{{$total}}</b>
                 </td>
             </tr>
-            <tr>
+            {{-- <tr>
                 <th style="width: 400px">
                     Medicines Total Stock
                 </th>
                 <td style="vertical-align: top; color: #000">
-                    <b>97</b>
+                    <b>{{$stock}}</b>
                 </td>
-            </tr>
+            </tr> --}}
             {{-- <tr>
                 <th style="vertical-align: top">Coupon Discount</th>
                 <td style="vertical-align: top; color: #000">

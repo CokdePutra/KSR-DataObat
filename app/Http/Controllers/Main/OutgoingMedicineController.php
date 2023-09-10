@@ -155,12 +155,18 @@ class OutgoingMedicineController extends Controller
         return response()->json($outgoingMedicineDetail);
     }
 
-    public function print() {
+    public function print(Request $request) {
         try {
-            $data = OutgoingMedicine::all();
-            $pdf = \PDF::loadview('main.invoice', compact('data'));
+            $start = $request->start_date;
+            $end = $request->end_date;
+
+            $data = OutgoingMedicine::whereBetween('outgoing_date', [$start, $end])->get();
+            // $stock = Batch::whereBetween('expired_date', [$start, $end])
+            //             ->sum('stock');
+
+            $pdf = \PDF::loadview('main.outgoing.print', compact('data', 'start', 'end'));
             $pdf->setPaper('a3', 'landscape');
-            return $pdf->download('test.pdf');
+            return $pdf->download('MedicineOutgoingReport - ' . time() . '.pdf');
         } catch (\Throwable $th) {
             return $th->getMessage();
         }
