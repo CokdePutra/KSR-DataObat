@@ -20,6 +20,11 @@
                                     <i class="nav-icon fa fa-plus font-weight-bold"></i> Add
                                 </button>
                             </a>
+                            <a href="{{ route('outgoing.print') }}">
+                                <button type="button" class="btn btn-outline-success">
+                                    <i class="nav-icon fa fa-print font-weight-bold"></i> Print
+                                </button>
+                            </a>
                         </div>
                         @endcan
                     </div>

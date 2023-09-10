@@ -10,6 +10,7 @@ use App\Models\OutgoingMedicine;
 use App\Models\OutgoingMedicineDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class OutgoingMedicineController extends Controller
 {
@@ -152,5 +153,16 @@ class OutgoingMedicineController extends Controller
         $outgoingMedicineDetail = OutgoingMedicineDetail::with(['medicine', 'batch'])->where('outgoing_medicine_id', $outgoingId)->get();
 
         return response()->json($outgoingMedicineDetail);
+    }
+
+    public function print() {
+        try {
+            $data = OutgoingMedicine::all();
+            $pdf = \PDF::loadview('main.invoice', compact('data'));
+            $pdf->setPaper('a3', 'landscape');
+            return $pdf->download('test.pdf');
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
     }
 }

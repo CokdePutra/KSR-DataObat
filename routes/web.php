@@ -63,11 +63,16 @@ Route::namespace('Main')->middleware('auth')->group(function () {
             Route::get('/medicine-database/{id}', 'medicineOnDatabase')->name('medicine.database');
             Route::post('/store', 'store')->name('store')->middleware('checkRole:operator');
             Route::post('/update', 'update')->name('update');
+            Route::get('/print', 'print')->name('print');
         });
 });
 
 Route::get('/not-found', function() {
     return view('template.notFound');
+})->middleware('auth');
+
+Route::get('/invoice', function() {
+    return view('main.invoice');
 })->middleware('auth');
 
 Auth::routes();
