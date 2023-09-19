@@ -12,7 +12,7 @@
                         <div class="col-6">
                             Data Medicine Out
                         </div>
-                        @can('operator')
+                        {{-- @can('operator') --}}
                         <div class="col-6 d-flex align-items-center">
                             <div class="m-auto"></div>
                             <a href="{{ route('outgoing.create') }}">
@@ -26,7 +26,7 @@
                             </button>
                             {{-- </a> --}}
                         </div>
-                        @endcan
+                        {{-- @endcan --}}
                     </div>
                 </div>
                 <div class="card-body">

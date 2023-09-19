@@ -110,7 +110,6 @@
 <body>
     <section class="main-pd-wrapper" style="width: 100%;">
         <div>
-            {{-- <div style="display: table-header-group"> --}}
             <h4 style="text-align: center; margin: 0">
                 <b>Medicines Outgoing Report</b>
             </h4>
@@ -131,10 +130,6 @@
                             <p style="font-weight: bold; margin-top: 15px">
                                 ITB STIKOM BALI - KSR
                             </p>
-                            {{-- <p style="font-weight: bold">
-                                Toll Free No. :
-                                <a href="tel:018001236477" style="color: #00bb07">1800-123-6477</a>
-                            </p> --}}
                         </div>
                     </td>
                     <td align="right"
@@ -146,19 +141,12 @@
               ">
                         <div>
                             <h4 style="margin-top: 5px; margin-bottom: 5px">
-                                Report generate to list all outgoing medicines
+                                Report generate to list all medicines
                             </h4>
-                            <p>The "Generate Report: Outgoing Medicines" report is a comprehensive document that
+                            <p>The "Generate Report: Batch Medicines" report is a comprehensive document that
                                 provides a detailed overview of all medicines dispensed or distributed during a
                                 specified time period. This report serves as a critical tool for healthcare
                                 administrators, pharmacists, and medical professionals to monitor medication usage</p>
-                            {{-- <p style="font-size: 14px">
-                                Aakriti Rathore,B-268, west vinod nagar, street no.2,near
-                                press apartment bus stand, Patparganj, IP
-                                Extension,Delhi,07,110092,Delhi(07)<br />
-                                Tel:
-                                <a href="tel:01241234568" style="color: #00bb07">0124-1234568</a>
-                            </p> --}}
                         </div>
                     </td>
                 </tr>
@@ -177,7 +165,7 @@
             ">
                     <td colspan="4">
                         <h3>
-                            E-Reporting for Medicines Outgoing
+                            E-Reporting for Medicines
                             <p
                                 style="
                     font-weight: 300;
@@ -209,74 +197,44 @@
                     <th style="width: 150px">
                         <h4>Medicine Name</h4>
                     </th>
-                    <th style="width: 80px">
+                    <th style="width: 80px" colspan="2">
                         <h4>
-                            Medicine<br />
-                            Code
+                            Batch Number
                         </h4>
                     </th>
-                    <th style="width: 80px">
-                        <h4>
-                            Category
-                        </h4>
-                    </th>
-                    <th style="width: 60px" colspan="2">
-                        <h4>Batch Number
-                        </h4>
-                    </th>
-                    {{-- <th style="width: 80px">
-                        <h4>Stock</h4>
-                    </th> --}}
-
-                    <th style="width: 80px">
-                        <h4>
-                            Expired<br />
-                            Date
-                        </h4>
-                    </th>
-                    <th style="width: 80px">
+                    <th style="width: 80px" colspan="2">
                         <h4>
                             Quantity
                         </h4>
                     </th>
-                    <th style="width: 80px">
+                    <th style="width: 80px" colspan="3">
                         <h4>
-                            Unit
+                            Stock
                         </h4>
                     </th>
-                    <th colspan="4" style="width: 300px">
+                    <th style="width: 200px">
                         <h4>
-                            Description
+                            Expired Date
+                        </h4>
+                    </th>
+                    <th colspan="3" style="width: 300px">
+                        <h4>
+                            Created by
                         </h4>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                @php
-                    $total = 0;
-                @endphp
-                @forelse ($data as $key => $outgoing)
-                @foreach ($outgoing->details as $index => $detail)
+                @forelse($batches as $batch)
                 <tr>
-                    @php
-                        $total += $detail->quantity;
-                    @endphp
-                    @if ($index === 0)
-                    <td rowspan="{{count($outgoing->details)}}">{{$key+1}}</td>
-                    @endif
-                    <td>{{$detail->medicine->name}}</td>
-                    <td>{{$detail->medicine->medicine_code}}</td>
-                    <td>{{$detail->medicine->category->name}}</td>
-                    <td colspan="2">{{$detail->batch->batch_number}}</td>
-                    {{-- <td>{{$detail->batch->stock}}</td> --}}
-                    <td>{{$detail->batch->expired_date}}</td>
-                    <td>{{$detail->quantity}}</td>
-                    <td>{{$detail->medicine->unit}}</td>
-                    @if ($index === 0)
-                    <td rowspan="{{count($outgoing->details)}}" colspan="4">{{$outgoing->description}}</td>
-                    @endif
+                    <td>{{$loop->iteration}}</td>
+                    <td>{{$batch->medicine->name}}</td>
+                    <td colspan="2">{{$batch->batch_number}}</td>
+                    <td colspan="2">{{$batch->quantity}}</td>
+                    <td colspan="3">{{$batch->stock}}</td>
+                    <td>{{$batch->expired_date}}</td>
+                    <td colspan="3">{{$batch->user->name}}</td>
                 </tr>
-                @endforeach
                 @empty
                 <tr>
                     <td colspan="13" style="text-align: center">
@@ -285,89 +243,7 @@
                 </tr>
                 @endforelse
             </tbody>
-            {{-- <tfoot></tfoot> --}}
         </table>
-
-        <table class="hm-p table-bordered" style="width: 100%; margin-top: 30px">
-            <tr>
-                <th style="width: 400px">
-                    Medicines Outgoing Total
-                </th>
-                <td style="vertical-align: top; color: #000">
-                    <b>{{$total}}</b>
-                </td>
-            </tr>
-            {{-- <tr>
-                <th style="width: 400px">
-                    Medicines Total Stock
-                </th>
-                <td style="vertical-align: top; color: #000">
-                    <b>{{$stock}}</b>
-                </td>
-            </tr> --}}
-            {{-- <tr>
-                <th style="vertical-align: top">Coupon Discount</th>
-                <td style="vertical-align: top; color: #000">
-                    <b> ₹0223Test</b>
-                </td>
-            </tr>
-            <tr>
-                <th style="vertical-align: top">Delivery Charge</th>
-                <td style="vertical-align: top">
-                    <b>₹0223Test</b>
-                </td>
-            </tr>
-
-            <tr>
-                <th style="vertical-align: top">Saving</th>
-                <td style="vertical-align: top; color: #000">
-                    <b>₹0223Test</b>
-                </td>
-            </tr> --}}
-        </table>
-
-        {{-- <table class="hm-p table-bordered" style="width: 100%; margin-top: 30px">
-            <tr>
-                <th style="width: 400px">
-                    <p>Payment Mode:</p>
-                    <p>COD:</p>
-                    <p>Deerika Cashback:</p>
-                </th>
-                <td style="width: 100px; border-right: none">
-                    <p>&nbsp;</p>
-                    <p style="text-align: right"><b>1199</b></p>
-                    <p style="text-align: right"><b>90</b></p>
-                </td>
-                <td colspan="5" style="border-left: none"></td>
-            </tr>
-            <tr style="background: #fcbd02">
-                <th>Total Order Value</th>
-                <td style="width: 70px; text-align: right; border-right: none">
-                    <b>1289</b>
-                </td>
-                <td colspan="5" style="border-left: none"></td>
-            </tr>
-        </table> --}}
-
-        {{-- <table style="width: 100%" cellspacing="0" cellspadding="0" border="0">
-            <tr>
-                <td>
-                    <h4 style="margin: 10px 0">
-                        Whether tax is Payable under reverse charge - No
-                    </h4>
-                    <p>
-                        This is computer generated invoice and hence signature is not
-                        required
-                    </p>
-                </td>
-                <td>
-                    <h4 style="margin: 0; text-align: right">
-                        Not a Deerika Plus+ member yet?<br />
-                        You could have saved 5%
-                    </h4>
-                </td>
-            </tr>
-        </table> --}}
     </section>
 </body>
 

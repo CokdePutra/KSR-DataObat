@@ -129,4 +129,41 @@ class MedicineController extends Controller
             ])->withInput();
         }
     }
+
+    public function delete($id)
+    {
+        try {
+            $medicine = Medicine::find($id);
+            $medicine->delete();
+
+            return redirect()->route('medicine.index')->with([
+                'status' => 'success',
+                'message' => 'Data deleted successfully',
+                'title' => 'Success'
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->with([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                'title' => 'Failed'
+            ]);
+        }
+    }
+
+    public function print(Request $request) {
+        try {
+            $start = $request->start_date;
+            $end = $request->end_date;
+
+            $medicines = Medicine::with('category')->whereBetween('created_at', [$start, $end])->get();
+            // $stock = Batch::whereBetween('expired_date', [$start, $end])
+            //             ->sum('stock');
+
+            $pdf = \PDF::loadview('main.medicine.print', compact('medicines', 'start', 'end'));
+            $pdf->setPaper('a3', 'landscape');
+            return $pdf->download('MedicinesReport - ' . time() . '.pdf');
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
+    }
 }

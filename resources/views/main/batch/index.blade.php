@@ -12,16 +12,20 @@
                         <div class="col-6">
                             Data Medicine Batch
                         </div>
-                        @can('operator')
-                            <div class="col-6 d-flex align-items-center">
-                                <div class="m-auto"></div>
-                                <a href="{{route('batch.create')}}">
+                        <div class="col-6 d-flex align-items-center">
+                            <div class="m-auto"></div>
+                            @can('admin')
+                                <a href="{{ route('batch.create') }}">
                                     <button type="button" class="btn btn-outline-primary">
                                         <i class="nav-icon fa fa-plus font-weight-bold"></i> Add
                                     </button>
                                 </a>
-                            </div>
-                        @endcan
+                            @endcan
+
+                            <button type="button" class="btn btn-outline-success ml-2 btn-print">
+                                <i class="nav-icon fa fa-print font-weight-bold"></i> Print
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -34,8 +38,8 @@
                             <th>Stock</th>
                             <th>Expired Date</th>
                             <th>Status</th>
-                            @can('operator')
-                            <th>Action</th>
+                            @can('admin')
+                                <th>Action</th>
                             @endcan
                         </thead>
                         <tbody>
@@ -51,13 +55,26 @@
                                         <span
                                             class="badge {{ $batch->is_active == true ? 'badge-primary' : 'badge-danger' }}">{{ $batch->is_active == true ? 'Active' : 'Inactive' }}</span>
                                     </td>
-                                    @can('operator')
+                                    @can('admin')
                                         <td>
-                                            <a href="{{route('batch.edit', $batch->id)}}">
-                                                <button class="btn btn-edit btn-primary">
-                                                    <i class="fa fa-pencil text-white mr-2 pointer"></i> Edit
-                                                </button>
-                                            </a>
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <a href="{{ route('batch.edit', $batch->id) }}">
+                                                        <button class="btn btn-edit btn-primary">
+                                                            <i class="fa fa-pencil text-white mr-2 pointer"></i> Edit
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                                <div class="col-9">
+                                                    <form method="POST" action="{{ route('batch.delete', $batch->id) }}">
+                                                        @csrf
+                                                        <input name="_method" type="hidden" value="DELETE">
+                                                        <button class="btn btn-delete btn-danger">
+                                                            <i class="fa fa-trash-alt text-white mr-2 pointer"></i> Delete
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </td>
                                     @endcan
                                 </tr>
@@ -70,15 +87,51 @@
     </div>
 @endsection
 
+@section('modal')
+    <div class="modal fade" id="modalPrint" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Print Report</h5>
+                    <button type="button" class="btn btn-danger btn-rounded" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-times-circle"></i>
+                    </button>
+                </div>
+                <form action="{{ route('batch.print') }}" method="POST">
+                    @csrf
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="start">Start Date (Expired Date)</label>
+                                <input type="date" name="start_date" id="start_date" class="form-control"
+                                    value="{{ date_format(date_create(now()), 'Y-m-d') }}">
+                            </div>
+                            <div class="col-6">
+                                <label for="end">End Date (Expired Date)</label>
+                                <input type="date" name="end_date" id="end_date" class="form-control"
+                                    value="{{ date_format(date_create(now()), 'Y-m-d') }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary pull-right" type="submit">Print</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endsection
+
 @push('script')
     <script>
         $(document).ready(function() {
-            @if(session('status'))
-            Swal.fire(
-                "{{session('title')}}",
-                "{{session('message')}}",
-                "{{session('status')}}",
-            );
+            @if (session('status'))
+                Swal.fire(
+                    "{{ session('title') }}",
+                    "{{ session('message') }}",
+                    "{{ session('status') }}",
+                );
             @endif
             var table = $('#tableData').DataTable({
                 language: {
@@ -118,6 +171,28 @@
                     cell.innerHTML = i + 1;
                 });
             }).draw();
+
+            $("body").on("click", ".btn-delete", function(event) {
+                var form = $(this).closest("form");
+                event.preventDefault();
+                Swal.fire({
+                    title: "Delete this item?",
+                    text: "Data will be deleted",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, deleted!",
+                }).then((result) => {
+                    if (result.value) {
+                        form.submit();
+                    }
+                });
+            });
+
+            $('body').on('click', '.btn-print', function() {
+                $('#modalPrint').modal('show');
+            })
         });
     </script>
 @endpush

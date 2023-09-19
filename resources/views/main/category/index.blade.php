@@ -13,22 +13,23 @@
                         <div class="col-6">
                             Data Category
                         </div>
-                        @can('operator')
-                            <div class="col-6 d-flex align-items-center">
-                                <div class="m-auto"></div>
+                        <div class="col-6 d-flex align-items-center">
+                            <div class="m-auto"></div>
+                            @can('admin')
                                 <a href="{{ route('category.create') }}">
                                     <button type="button" class="btn btn-outline-primary">
                                         <i class="nav-icon fa fa-plus font-weight-bold"></i> Add
                                     </button>
                                 </a>
+                            @endcan
+                            {{-- <button class="btn btn-primary btn-print" onclick="printData()">Print</button> --}}
 
-                                {{-- <button class="btn btn-primary btn-print" onclick="printData()">Print</button> --}}
-
+                            <a href="{{route('category.print')}}">
                                 <button type="button" class="btn btn-outline-success btn-print ml-2">
                                     <i class="nav-icon fa fa-print font-weight-bold"></i> Print
                                 </button>
-                            </div>
-                        @endcan
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body" id="testing">
@@ -37,7 +38,7 @@
                             <th>No</th>
                             <th>Category Name</th>
                             <th>Status</th>
-                            @can('operator')
+                            @can('admin')
                                 <th>Action</th>
                             @endcan
                         </thead>
@@ -50,7 +51,7 @@
                                         <span
                                             class="badge {{ $category->is_active == true ? 'badge-primary' : 'badge-danger' }}">{{ $category->is_active == true ? 'Active' : 'Inactive' }}</span>
                                     </td>
-                                    @can('operator')
+                                    @can('admin')
                                         <td>
                                             <a href="{{ route('category.edit', $category->id) }}">
                                                 <button class="btn btn-edit btn-primary">
@@ -73,73 +74,6 @@
     <script src="{{ asset('assets/js/print/main.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $("body").on("click", ".btn-print", function() {
-                Swal.fire({
-                    title: "Cetak data kategori?",
-                    text: "Laporan akan dicetak",
-                    icon: "success",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Ya, cetak!",
-                }).then((result) => {
-                    if (result.value) {
-                        // Open a new window for printing
-                        var printWindow = window.open('', '', '');
-                        // var printWindow = window.open('', '', 'width=600,height=600');
-
-                        // AJAX request to fetch the printable content
-                        var mode = "iframe"; //popup
-                var close = mode == "popup";
-                        var options = {
-                    mode: mode,
-                    popClose: close,
-                    popTitle: "LaporanDataKategori",
-                    // popOrient: "landscape",
-                };
-                        $.ajax({
-                            type: "GET",
-                            url: "/category/print/",
-                            dataType: "json",
-                            success: function(response) {
-                                // Check if the response contains the expected content
-                                if (response && response.data) {
-                                    // Write the content to the new window
-                                    // printWindow.document.write(response.data);
-
-                                    // // Print the window
-                                    // printWindow.document.close();
-                                    // printWindow.print();
-                                    // printWindow.close();
-
-                                    document.title =
-                            "PT. PANUDUH ATMA WARAS | Distribusi Buku - Print" +
-                            new Date().toJSON().slice(0, 10).replace(/-/g, "/");
-                        $(response.data)
-                            .find("div.printableArea")
-                            .printArea(options);
-                                } else {
-                                    // Handle an unexpected response or data missing from the response
-                                    Swal.fire({
-                                        title: "Error",
-                                        text: "Data untuk cetak tidak ditemukan.",
-                                        icon: "error",
-                                    });
-                                }
-                            },
-                            error: function() {
-                                // Handle AJAX request errors
-                                Swal.fire({
-                                    title: "Error",
-                                    text: "Gagal memuat data untuk cetak.",
-                                    icon: "error",
-                                });
-                            },
-                        });
-                    }
-                });
-            });
-
             @if (session('status'))
                 Swal.fire(
                     "{{ session('title') }}",

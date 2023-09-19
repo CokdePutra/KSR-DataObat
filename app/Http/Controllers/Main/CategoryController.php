@@ -19,15 +19,16 @@ class CategoryController extends Controller
         return view('main.category.create');
     }
 
-    public function print()
-    {
-        $categories = Category::all();
+    public function print(Request $request) {
+        try {
+            $categories = Category::all();
 
-        $view = [
-            'data' => view('main.category.print', compact('categories'))->render(),
-        ];
-
-        return response()->json($view);
+            $pdf = \PDF::loadview('main.category.print', compact('categories'));
+            $pdf->setPaper('a3', 'landscape');
+            return $pdf->download('CategoriesReport - ' . time() . '.pdf');
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
     }
 
     public function store(CategoryRequest $request)
