@@ -285,7 +285,6 @@
                 </tr>
                 @endforelse
             </tbody>
-            {{-- <tfoot></tfoot> --}}
         </table>
 
         <table class="hm-p table-bordered" style="width: 100%; margin-top: 30px">
@@ -297,77 +296,19 @@
                     <b>{{$total}}</b>
                 </td>
             </tr>
-            {{-- <tr>
-                <th style="width: 400px">
-                    Medicines Total Stock
-                </th>
-                <td style="vertical-align: top; color: #000">
-                    <b>{{$stock}}</b>
-                </td>
-            </tr> --}}
-            {{-- <tr>
-                <th style="vertical-align: top">Coupon Discount</th>
-                <td style="vertical-align: top; color: #000">
-                    <b> ₹0223Test</b>
-                </td>
-            </tr>
-            <tr>
-                <th style="vertical-align: top">Delivery Charge</th>
-                <td style="vertical-align: top">
-                    <b>₹0223Test</b>
-                </td>
-            </tr>
-
-            <tr>
-                <th style="vertical-align: top">Saving</th>
-                <td style="vertical-align: top; color: #000">
-                    <b>₹0223Test</b>
-                </td>
-            </tr> --}}
         </table>
 
-        {{-- <table class="hm-p table-bordered" style="width: 100%; margin-top: 30px">
+        <table style="width: 20%; margin-top: 30px; position: absolute; right: 15px;">
             <tr>
-                <th style="width: 400px">
-                    <p>Payment Mode:</p>
-                    <p>COD:</p>
-                    <p>Deerika Cashback:</p>
-                </th>
-                <td style="width: 100px; border-right: none">
-                    <p>&nbsp;</p>
-                    <p style="text-align: right"><b>1199</b></p>
-                    <p style="text-align: right"><b>90</b></p>
-                </td>
-                <td colspan="5" style="border-left: none"></td>
+                <td style="text-align: center">Mengetahui,</td>
             </tr>
-            <tr style="background: #fcbd02">
-                <th>Total Order Value</th>
-                <td style="width: 70px; text-align: right; border-right: none">
-                    <b>1289</b>
-                </td>
-                <td colspan="5" style="border-left: none"></td>
-            </tr>
-        </table> --}}
-
-        {{-- <table style="width: 100%" cellspacing="0" cellspadding="0" border="0">
             <tr>
-                <td>
-                    <h4 style="margin: 10px 0">
-                        Whether tax is Payable under reverse charge - No
-                    </h4>
-                    <p>
-                        This is computer generated invoice and hence signature is not
-                        required
-                    </p>
-                </td>
-                <td>
-                    <h4 style="margin: 0; text-align: right">
-                        Not a Deerika Plus+ member yet?<br />
-                        You could have saved 5%
-                    </h4>
-                </td>
+                <td style="text-align: center">Ketua umum KSR ITB STIKOM Bali,</td>
             </tr>
-        </table> --}}
+            <tr>
+                <td style="text-align: center"><br><br><br><br>(Frantika Putri)</td>
+            </tr>
+        </table>
     </section>
 </body>
 

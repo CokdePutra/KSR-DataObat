@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * Define the application's command schedule.
      */
     protected $command = [
-        Commands\BatchUpdate::class
+        Commands\BatchUpdate::class,
+        Commands\OutgoingUpdate::class
     ];
 
     protected function schedule(Schedule $schedule): void
@@ -27,6 +28,10 @@ class Kernel extends ConsoleKernel
         // })->everySecond();
         $schedule->command('batch:update')->everySecond();
         // $schedule->command('batch:update')->cron('1 * * * *');
+
+
+        // update outgoing
+        $schedule->command('outgoing:update')->everySecond();
     }
 
     /**

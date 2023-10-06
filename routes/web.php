@@ -22,6 +22,7 @@ Route::namespace('Main')->middleware('auth')->group(function () {
                 Route::get('/edit/{id}', 'edit')->name('edit');
                 Route::post('/store', 'store')->name('store');
                 Route::post('/update', 'update')->name('update');
+                Route::delete('/delete/{id}', 'delete')->name('delete');
             });
             Route::get('/print', 'print')->name('print');
         });
@@ -71,6 +72,7 @@ Route::namespace('Main')->middleware('auth')->group(function () {
             Route::post('/store', 'store')->name('store');
             Route::post('/update', 'update')->name('update');
             Route::post('/print', 'print')->name('print');
+            Route::delete('/delete/{id}', 'delete')->name('delete');
         });
 });
 

@@ -171,4 +171,34 @@ class OutgoingMedicineController extends Controller
             return $th->getMessage();
         }
     }
+
+    public function delete($id)
+    {
+        try {
+            $outgoing = OutgoingMedicine::find($id);
+
+            $outgoingMedicineDetail = OutgoingMedicineDetail::where('outgoing_medicine_id',$outgoing->id)->get();
+
+            foreach ($outgoingMedicineDetail as $detail) {
+                $batch = Batch::where('id', $detail->batch_id)->first();
+                $batch->update([
+                    'stock' => $batch->stock + $detail->quantity
+                ]);
+            }
+
+            $outgoing->delete();
+
+            return redirect()->route('outgoing.index')->with([
+                'status' => 'success',
+                'message' => 'Data deleted successfully',
+                'title' => 'Success'
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->with([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                'title' => 'Failed'
+            ]);
+        }
+    }
 }

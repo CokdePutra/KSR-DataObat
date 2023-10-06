@@ -52,12 +52,35 @@
                                             class="badge {{ $category->is_active == true ? 'badge-primary' : 'badge-danger' }}">{{ $category->is_active == true ? 'Active' : 'Inactive' }}</span>
                                     </td>
                                     @can('admin')
-                                        <td>
+                                        {{-- <td>
                                             <a href="{{ route('category.edit', $category->id) }}">
                                                 <button class="btn btn-edit btn-primary">
                                                     <i class="fa fa-pencil text-white mr-2 pointer"></i> Edit
                                                 </button>
                                             </a>
+                                        </td> --}}
+
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-2 text-right">
+                                                    <a href="{{ route('category.edit', $category->id) }}">
+                                                        <button class="btn btn-edit btn-primary ml-5">
+                                                            <i class="fa fa-pencil text-white mr-2 pointer"></i> Edit
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                                <div class="col-9">
+                                                    <form method="POST"
+                                                        action="{{ route('category.delete', $category->id) }}">
+                                                        @csrf
+                                                        <input name="_method" type="hidden" value="DELETE">
+                                                        <button class="btn btn-delete btn-danger"
+                                                            data-id="{{ $category->id }}">
+                                                            <i class="fa fa-trash-alt text-white mr-2 pointer"></i> Delete
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </td>
                                     @endcan
                                 </tr>
@@ -119,6 +142,24 @@
                     cell.innerHTML = i + 1;
                 });
             }).draw();
+
+            $("body").on("click", ".btn-delete", function(event) {
+                var form = $(this).closest("form");
+                event.preventDefault();
+                Swal.fire({
+                    title: "Delete this item?",
+                    text: "Data will be deleted",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, deleted!",
+                }).then((result) => {
+                    if (result.value) {
+                        form.submit();
+                    }
+                });
+            });
         });
     </script>
 @endpush

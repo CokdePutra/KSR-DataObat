@@ -24,7 +24,7 @@
                         {{-- @endcan --}}
                     </div>
                 </div>
-                <form action="{{route('medicine.update')}}" method="POST" id="form">
+                <form action="{{route('medicine.update')}}" method="POST" id="form" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
                         <input type="hidden" name="id" id="id" value="{{$medicine->id}}">
@@ -104,7 +104,7 @@
 <!-- Laravel Javascript Validation -->
 <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
 
-{!! JsValidator::formRequest('App\Http\Requests\CategoryRequest', '#form') !!}
+{!! JsValidator::formRequest('App\Http\Requests\MedicineRequest', '#form') !!}
 
 <script>
     $(document).ready(function () {

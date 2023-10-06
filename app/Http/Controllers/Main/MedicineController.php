@@ -98,9 +98,9 @@ class MedicineController extends Controller
             ];
 
             if($request->hasFile('image')) {
-                if($medicine->image != $this->defaultImage) {
-                    unlink($medicine->image);
-                }
+                // if($medicine->image != $this->defaultImage) {
+                //     unlink($medicine->image);
+                // }
                 $fileExtension = $request->file('image')->getClientOriginalExtension();
                 $fileName = str_replace(' ', '', $request->name) . '-' . time() . '.' . $fileExtension;
                 $savePath = 'assets/uploads/medicines';

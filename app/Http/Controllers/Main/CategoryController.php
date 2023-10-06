@@ -87,4 +87,24 @@ class CategoryController extends Controller
             ])->withInput();
         }
     }
+
+    public function delete($id)
+    {
+        try {
+            $category = Category::find($id);
+            $category->delete();
+
+            return redirect()->route('category.index')->with([
+                'status' => 'success',
+                'message' => 'Data deleted successfully',
+                'title' => 'Success'
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->with([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                'title' => 'Failed'
+            ]);
+        }
+    }
 }

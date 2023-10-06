@@ -51,7 +51,7 @@
                                             class="badge {{ $outgoingMedicine->is_active == true ? 'badge-primary' : 'badge-danger' }}">{{ $outgoingMedicine->is_active == true ? 'Active' : 'Inactive' }}</span>
                                     </td> --}}
                                     {{-- @can('operator') --}}
-                                    <td>
+                                    {{-- <td>
                                         <a href="{{ route('outgoing.edit', $outgoingMedicine->id) }}">
                                             <button class="btn btn-edit btn-primary">
                                                 <i class="fa fa-pencil text-white mr-2 pointer"></i> Edit
@@ -60,6 +60,32 @@
                                         <button class="btn btn-detail btn-success" data-id="{{ $outgoingMedicine->id }}">
                                             <i class="fa fa-eye text-white mr-2 pointer"></i> Detail
                                         </button>
+                                    </td> --}}
+
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-4 text-right">
+                                                <a href="{{ route('outgoing.edit', $outgoingMedicine->id) }}">
+                                                    <button class="btn btn-edit btn-primary">
+                                                        <i class="fa fa-pencil text-white mr-2 pointer"></i> Edit
+                                                    </button>
+                                                </a>
+                                                <button class="btn btn-detail btn-success ml-4" data-id="{{ $outgoingMedicine->id }}">
+                                                    <i class="fa fa-eye text-white mr-2 pointer"></i> Detail
+                                                </button>
+                                            </div>
+                                            <div class="col-8">
+                                                <form method="POST"
+                                                    action="{{ route('outgoing.delete', $outgoingMedicine->id) }}">
+                                                    @csrf
+                                                    <input name="_method" type="hidden" value="DELETE">
+                                                    <button class="btn btn-delete btn-danger"
+                                                        data-id="{{ $outgoingMedicine->id }}">
+                                                        <i class="fa fa-trash-alt text-white mr-2 pointer"></i> Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </td>
                                     {{-- @endcan --}}
                                 </tr>
@@ -218,6 +244,24 @@
             $('body').on('click', '.btn-print', function() {
                 $('#modalPrint').modal('show');
             })
+
+            $("body").on("click", ".btn-delete", function(event) {
+                var form = $(this).closest("form");
+                event.preventDefault();
+                Swal.fire({
+                    title: "Delete this item?",
+                    text: "Data will be deleted",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, deleted!",
+                }).then((result) => {
+                    if (result.value) {
+                        form.submit();
+                    }
+                });
+            });
         });
     </script>
 @endpush
