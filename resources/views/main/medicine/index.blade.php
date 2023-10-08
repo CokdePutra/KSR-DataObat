@@ -35,7 +35,7 @@
                             <th>Category Name</th>
                             <th>Medicine Name</th>
                             <th>Medicine Code</th>
-                            {{-- <th>Stock</th> --}}
+                            {{-- <th>Description</th> --}}
                             {{-- <th>Expired Date</th> --}}
                             <th>Status</th>
                             @can('admin')
@@ -53,6 +53,11 @@
                                     <td>{{ $medicine->category->name }}</td>
                                     <td>{{ $medicine->name }}</td>
                                     <td>{{ $medicine->medicine_code }}</td>
+                                    {{-- <td>
+                                        <p class="description">
+                                            {{ $medicine->description ?? '-' }}
+                                        </p>
+                                    </td> --}}
                                     {{-- <td>{{ $medicine->stock . ' ' . $medicine->unit }}</td> --}}
                                     {{-- <td>{{ date_format(date_create($medicine->expired_date), 'd-m-Y') }}</td> --}}
                                     <td>

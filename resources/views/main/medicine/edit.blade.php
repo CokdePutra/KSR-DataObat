@@ -81,6 +81,10 @@
                             <span class="text-small text-muted">*leave blank if you do not want to change the image</span>
                         </div>
                         <div class="form-group">
+                            <label for="name">Medicine Description</label>
+                            <textarea name="description" id="description" class="form-control" rows="5">{{$medicine->description}}</textarea>
+                        </div>
+                        <div class="form-group">
                             <label for="status">Status</label>
                             <select name="status" id="status" class="form-control">
                                 <option value="1" {{$medicine->is_active == true ? 'selected' : ''}}>Active</option>

@@ -158,7 +158,8 @@ class OutgoingMedicineController extends Controller
     public function print(Request $request) {
         try {
             $start = $request->start_date;
-            $end = $request->end_date;
+            $end = date('Y-m-d H:i:s', strtotime($request->end_date . ' +1 day'));
+            // $end = $request->end_date;
 
             $data = OutgoingMedicine::whereBetween('outgoing_date', [$start, $end])->get();
             // $stock = Batch::whereBetween('expired_date', [$start, $end])

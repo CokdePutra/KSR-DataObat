@@ -68,6 +68,10 @@
                             <input type="file" name="image" id="image" class="form-control" placeholder="place enter medicine image" autocomplete="off" autofocus>
                             <span class="text-small text-muted">*leave blank if you doesn't have an image</span>
                         </div>
+                        <div class="form-group">
+                            <label for="name">Medicine Description</label>
+                            <textarea name="description" id="description" class="form-control" rows="5"></textarea>
+                        </div>
                     </div>
                     <div class="card-footer">
                         <div class="form-group">

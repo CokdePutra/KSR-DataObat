@@ -143,7 +143,7 @@
                             <h4 style="margin-top: 5px; margin-bottom: 5px">
                                 Report generate to list all medicines
                             </h4>
-                            <p>The "Generate Report: Outgoing Medicines" report is a comprehensive document that
+                            <p>The "Generate Report: Medicines" report is a comprehensive document that
                                 provides a detailed overview of all medicines dispensed or distributed during a
                                 specified time period. This report serves as a critical tool for healthcare
                                 administrators, pharmacists, and medical professionals to monitor medication usage</p>

@@ -153,11 +153,9 @@ class MedicineController extends Controller
     public function print(Request $request) {
         try {
             $start = $request->start_date;
-            $end = $request->end_date;
+            $end = date('Y-m-d H:i:s', strtotime($request->end_date . ' +1 day'));
 
             $medicines = Medicine::with('category')->whereBetween('created_at', [$start, $end])->get();
-            // $stock = Batch::whereBetween('expired_date', [$start, $end])
-            //             ->sum('stock');
 
             $pdf = \PDF::loadview('main.medicine.print', compact('medicines', 'start', 'end'));
             $pdf->setPaper('a3', 'landscape');

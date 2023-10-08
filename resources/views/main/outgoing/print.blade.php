@@ -306,7 +306,7 @@
                 <td style="text-align: center">Ketua umum KSR ITB STIKOM Bali,</td>
             </tr>
             <tr>
-                <td style="text-align: center"><br><br><br><br>(Frantika Putri)</td>
+                <td style="text-align: center"><br><br><br><br>(Frantika Putri Pratiwi)</td>
             </tr>
         </table>
     </section>
