@@ -30,13 +30,11 @@
                 <div class="card-body">
                     <table class="table table-hover table-striped" id="tableData">
                         <thead>
-                            <th>No</th>
+                            <td></td>
                             <th>Image</th>
                             <th>Category Name</th>
                             <th>Medicine Name</th>
                             <th>Medicine Code</th>
-                            {{-- <th>Description</th> --}}
-                            {{-- <th>Expired Date</th> --}}
                             <th>Status</th>
                             @can('admin')
                                 <th>Action</th>
@@ -45,7 +43,13 @@
                         <tbody>
                             @foreach ($medicines as $medicine)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>
+                                        <button class="btn btn-rounded btn-primary btn-detail"
+                                            data-description="{{ $medicine->description }}">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                    </td>
+                                    {{-- <td>{{ $loop->iteration }}</td> --}}
                                     <td class="text-center">
                                         <img src="{{ $medicine->image }}" class="img-fluid" width="100px"
                                             alt="{{ $medicine->name }}">
@@ -53,13 +57,6 @@
                                     <td>{{ $medicine->category->name }}</td>
                                     <td>{{ $medicine->name }}</td>
                                     <td>{{ $medicine->medicine_code }}</td>
-                                    {{-- <td>
-                                        <p class="description">
-                                            {{ $medicine->description ?? '-' }}
-                                        </p>
-                                    </td> --}}
-                                    {{-- <td>{{ $medicine->stock . ' ' . $medicine->unit }}</td> --}}
-                                    {{-- <td>{{ date_format(date_create($medicine->expired_date), 'd-m-Y') }}</td> --}}
                                     <td>
                                         <span
                                             class="badge {{ $medicine->is_active == true ? 'badge-primary' : 'badge-danger' }}">{{ $medicine->is_active == true ? 'Active' : 'Inactive' }}</span>
@@ -167,21 +164,21 @@
                 order: [
                     [0, 'desc']
                 ],
-                "rowCallback": function(row, data, index) {
-                    // Set the row number as the first cell in each row
-                    $('td:eq(0)', row).html(index + 1);
-                }
+                // "rowCallback": function(row, data, index) {
+                //     // Set the row number as the first cell in each row
+                //     $('td:eq(0)', row).html(index + 1);
+                // }
             });
 
             // Update row numbers when the table is sorted
-            table.on('order.dt search.dt', function() {
-                table.column(0, {
-                    search: 'applied',
-                    order: 'applied'
-                }).nodes().each(function(cell, i) {
-                    cell.innerHTML = i + 1;
-                });
-            }).draw();
+            // table.on('order.dt search.dt', function() {
+            //     table.column(0, {
+            //         search: 'applied',
+            //         order: 'applied'
+            //     }).nodes().each(function(cell, i) {
+            //         cell.innerHTML = i + 1;
+            //     });
+            // }).draw();
 
             $("body").on("click", ".btn-delete", function(event) {
                 var form = $(this).closest("form");
@@ -204,6 +201,29 @@
             $('body').on('click', '.btn-print', function() {
                 $('#modalPrint').modal('show');
             })
+
+            $('#tableData').on('click', '.btn-detail', function() {
+                var tr = $(this).closest('tr');
+                var row = table.row(tr);
+                var icon = $(this).find('i');
+                let description = '<h4>Description: </h4>' +
+                                    '<p>' + $(this).data('description') + '</p>';
+
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                    icon.removeClass('fa-minus').addClass('fa-eye');
+                } else {
+                    // Open this row
+                    // row.child(format(row.data())).show();
+                    row.child(description).show();
+                    tr.addClass('shown');
+
+                    icon.removeClass('fa-eye').addClass('fa-minus');
+                }
+            });
         });
     </script>
 @endpush

@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
+use App\Console\Commands\UpdateBatchNumber;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    protected $commands = [
+        UpdateBatchNumber::class
+    ];
     /**
      * Register any application services.
      */
@@ -19,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if($this->app->runningInConsole()) {
+            $this->commands([
+                UpdateBatchNumber::class
+            ]);
+        }
     }
 }
