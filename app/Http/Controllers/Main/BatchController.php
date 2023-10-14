@@ -7,6 +7,7 @@ use App\Http\Requests\BatchRequest;
 use App\Models\Batch;
 use App\Models\Medicine;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class BatchController extends Controller
 {
@@ -32,10 +33,12 @@ class BatchController extends Controller
     public function store(BatchRequest $request)
     {
         try {
+            $uuid = Str::uuid();
+            $uuidWithoutHyphens = str_replace('-', '', $uuid->toString());
             $data = [
                 'user_id' => auth()->user()->id,
                 'medicine_id' => $request->medicine_id,
-                'batch_number' => generateBatchNumber(),
+                'batch_number' => 'BATCH-' . substr($uuidWithoutHyphens, 0, 20),
                 'quantity' => $request->quantity,
                 'stock' => $request->quantity,
                 'expired_date' => $request->expired_date,
@@ -69,9 +72,11 @@ class BatchController extends Controller
     {
         try {
             $batch = Batch::findOrFail($request->id);
+            $uuid = Str::uuid();
+            $uuidWithoutHyphens = str_replace('-', '', $uuid->toString());
             $data = [
                 'medicine_id' => $request->medicine_id,
-                'batch_number' => generateBatchNumber(),
+                'batch_number' => 'BATCH-' . substr($uuidWithoutHyphens, 0, 20),
                 'quantity' => $request->quantity,
                 'stock' => $request->quantity,
                 'expired_date' => $request->expired_date,
