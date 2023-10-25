@@ -33,7 +33,7 @@
                         <thead>
                             <th>No</th>
                             <th>Medicine Name</th>
-                            <th>Batch Number</th>
+                            {{-- <th>Batch Number</th> --}}
                             <th>Quantity</th>
                             <th>Stock</th>
                             <th>Expired Date</th>
@@ -47,7 +47,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $batch->medicine->name }}</td>
-                                    <td>{{ $batch->batch_number }}</td>
+                                    {{-- <td>{{ $batch->batch_number }}</td> --}}
                                     <td>{{ $batch->quantity . ' ' . $batch->medicine->unit }}</td>
                                     <td>{{ $batch->stock }}</td>
                                     <td>{{ date_format(date_create($batch->expired_date), 'd-m-Y') }}</td>

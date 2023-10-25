@@ -22,6 +22,7 @@ table.dataTable td,
 table.dataTable th {
     -webkit-box-sizing: content-box;
     box-sizing: content-box;
+    font-size: 18px;
 }
 
 table.dataTable td.dataTables_empty,
