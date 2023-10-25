@@ -64,7 +64,7 @@
 
                                     <td>
                                         <div class="row">
-                                            <div class="col-4 text-right">
+                                            <div class="col-4 text-center">
                                                 <a href="{{ route('outgoing.edit', $outgoingMedicine->id) }}">
                                                     <button class="btn btn-edit btn-primary">
                                                         <i class="fa fa-pencil text-white mr-2 pointer"></i> Edit

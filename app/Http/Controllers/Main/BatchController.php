@@ -15,7 +15,12 @@ class BatchController extends Controller
     {
         $medicine = Medicine::with('category')->where('id', $id)->firstOrFail();
 
-        return response()->json($medicine);
+        $currentStock = $medicine->batches->where('medicine_id', $id)->sum('stock');
+
+        return response()->json([
+            'medicine' => $medicine,
+            'currentStock' => $currentStock
+        ]);
     }
 
     public function index()
@@ -120,7 +125,8 @@ class BatchController extends Controller
         }
     }
 
-    public function print(Request $request) {
+    public function print(Request $request)
+    {
         try {
             $start = $request->start_date;
             $end = $request->end_date;

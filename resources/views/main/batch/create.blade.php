@@ -105,10 +105,10 @@
                 let value = $(this).val();
                 $('.hidden-input').prop('hidden', (value == '' ? true : false));
                 $.get("/batch/medicine-detail/" + value, function(data) {
-                    $('#category').val(data.category.name)
-                    $('#medicine_code').val(data.medicine_code)
-                    $('#unit').val(data.unit)
-                    $('#current_stock').val(data.unit)
+                    $('#category').val(data.medicine.category.name)
+                    $('#medicine_code').val(data.medicine.medicine_code)
+                    $('#unit').val(data.medicine.unit)
+                    $('#current_stock').val(data.currentStock + ' ' + data.medicine.unit)
                 });
             });
         });

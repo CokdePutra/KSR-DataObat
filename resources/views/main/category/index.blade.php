@@ -62,7 +62,7 @@
 
                                         <td>
                                             <div class="row">
-                                                <div class="col-2 text-right">
+                                                <div class="col-3 text-center">
                                                     <a href="{{ route('category.edit', $category->id) }}">
                                                         <button class="btn btn-edit btn-primary ml-5">
                                                             <i class="fa fa-pencil text-white mr-2 pointer"></i> Edit

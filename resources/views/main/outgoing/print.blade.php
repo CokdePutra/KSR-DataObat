@@ -206,24 +206,24 @@
 
                 <tr>
                     <th style="width: 50px">#</th>
-                    <th style="width: 150px">
+                    <th style="width: 150px" colspan="2">
                         <h4>Medicine Name</h4>
                     </th>
-                    <th style="width: 80px">
+                    {{-- <th style="width: 80px">
                         <h4>
                             Medicine<br />
                             Code
                         </h4>
-                    </th>
-                    <th style="width: 80px">
+                    </th> --}}
+                    <th style="width: 80px" colspan="3">
                         <h4>
                             Category
                         </h4>
                     </th>
-                    <th style="width: 60px" colspan="2">
+                    {{-- <th style="width: 60px" colspan="2">
                         <h4>Batch Number
                         </h4>
-                    </th>
+                    </th> --}}
                     {{-- <th style="width: 80px">
                         <h4>Stock</h4>
                     </th> --}}
@@ -264,10 +264,10 @@
                     @if ($index === 0)
                     <td rowspan="{{count($outgoing->details)}}">{{$key+1}}</td>
                     @endif
-                    <td>{{$detail->medicine->name}}</td>
-                    <td>{{$detail->medicine->medicine_code}}</td>
-                    <td>{{$detail->medicine->category->name}}</td>
-                    <td colspan="2">{{$detail->batch->batch_number}}</td>
+                    <td colspan="2">{{$detail->medicine->name}}</td>
+                    {{-- <td>{{$detail->medicine->medicine_code}}</td> --}}
+                    <td colspan="3">{{$detail->medicine->category->name}}</td>
+                    {{-- <td colspan="2">{{$detail->batch->batch_number}}</td> --}}
                     {{-- <td>{{$detail->batch->stock}}</td> --}}
                     <td>{{$detail->batch->expired_date}}</td>
                     <td>{{$detail->quantity}}</td>

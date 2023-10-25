@@ -30,12 +30,12 @@
                 <div class="card-body">
                     <table class="table table-hover table-striped" id="tableData">
                         <thead>
-                            <td></td>
+                            <td>No</td>
                             <th>Image</th>
                             <th>Category Name</th>
                             <th>Medicine Name</th>
-                            <th>Medicine Code</th>
-                            <th>Status</th>
+                            {{-- <th>Medicine Code</th>
+                            <th>Status</th> --}}
                             @can('admin')
                                 <th>Action</th>
                             @endcan
@@ -43,44 +43,42 @@
                         <tbody>
                             @foreach ($medicines as $medicine)
                                 <tr>
-                                    <td>
-                                        <button class="btn btn-rounded btn-primary btn-detail"
-                                            data-description="{{ $medicine->description }}">
-                                            <i class="fa fa-eye"></i>
-                                        </button>
-                                    </td>
-                                    {{-- <td>{{ $loop->iteration }}</td> --}}
+                                    <td>{{ $loop->iteration }}</td>
                                     <td class="text-center">
                                         <img src="{{ $medicine->image }}" class="img-fluid" width="100px"
                                             alt="{{ $medicine->name }}">
                                     </td>
                                     <td>{{ $medicine->category->name }}</td>
                                     <td>{{ $medicine->name }}</td>
-                                    <td>{{ $medicine->medicine_code }}</td>
+                                    {{-- <td>{{ $medicine->medicine_code }}</td>
                                     <td>
                                         <span
                                             class="badge {{ $medicine->is_active == true ? 'badge-primary' : 'badge-danger' }}">{{ $medicine->is_active == true ? 'Active' : 'Inactive' }}</span>
-                                    </td>
+                                    </td> --}}
                                     @can('admin')
                                         <td>
                                             <div class="row">
-                                                <div class="col-3">
+                                                <div class="col-2">
                                                     <a href="{{ route('medicine.edit', $medicine->id) }}">
                                                         <button class="btn btn-edit btn-primary">
                                                             <i class="fa fa-pencil text-white mr-2 pointer"></i> Edit
                                                         </button>
                                                     </a>
                                                 </div>
-                                                <div class="col-9">
-                                                    <form method="POST"
-                                                        action="{{ route('medicine.delete', $medicine->id) }}">
+                                                <div class="col-2">
+                                                    <form method="POST" action="{{ route('medicine.delete', $medicine->id) }}">
                                                         @csrf
                                                         <input name="_method" type="hidden" value="DELETE">
-                                                        <button class="btn btn-delete btn-danger"
-                                                            data-id="{{ $medicine->id }}">
+                                                        <button class="btn btn-delete btn-danger" data-id="{{ $medicine->id }}">
                                                             <i class="fa fa-trash-alt text-white mr-2 pointer"></i> Delete
                                                         </button>
                                                     </form>
+                                                </div>
+                                                <div class="col-2">
+                                                    <button class="btn btn-rounded btn-info btn-detail"
+                                                        data-description="{{ $medicine->description }}">
+                                                        <i class="fa fa-info-circle"></i>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </td>
@@ -164,21 +162,21 @@
                 order: [
                     [0, 'desc']
                 ],
-                // "rowCallback": function(row, data, index) {
-                //     // Set the row number as the first cell in each row
-                //     $('td:eq(0)', row).html(index + 1);
-                // }
+                "rowCallback": function(row, data, index) {
+                    // Set the row number as the first cell in each row
+                    $('td:eq(0)', row).html(index + 1);
+                }
             });
 
             // Update row numbers when the table is sorted
-            // table.on('order.dt search.dt', function() {
-            //     table.column(0, {
-            //         search: 'applied',
-            //         order: 'applied'
-            //     }).nodes().each(function(cell, i) {
-            //         cell.innerHTML = i + 1;
-            //     });
-            // }).draw();
+            table.on('order.dt search.dt', function() {
+                table.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function(cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }).draw();
 
             $("body").on("click", ".btn-delete", function(event) {
                 var form = $(this).closest("form");
@@ -207,7 +205,7 @@
                 var row = table.row(tr);
                 var icon = $(this).find('i');
                 let description = '<h4>Description: </h4>' +
-                                    '<p>' + $(this).data('description') + '</p>';
+                    '<p>' + $(this).data('description') + '</p>';
 
 
                 if (row.child.isShown()) {
