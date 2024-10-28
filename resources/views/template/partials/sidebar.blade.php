@@ -30,7 +30,14 @@
                 <div class="triangle"></div>
             </li>
             <li class="nav-item {{ Str::contains(request()->url(), 'outgoing') ? 'active' : '' }}">
-                <a class="nav-item-hold" href="{{route('outgoing.index')}}">
+                <a class="nav-item-hold" href="{{ route('outgoing.index') }}">
+                    <i class="nav-icon i-Medicine-3"></i>
+                    <span class="nav-text">Outgoing</span>
+                </a>
+                <div class="triangle"></div>
+            </li>
+            <li class="nav-item {{ Str::contains(request()->url(), 'outgoing') ? 'active' : '' }}">
+                <a class="nav-item-hold" href="{{ route('outgoing.index') }}">
                     <i class="nav-icon i-Medicine-3"></i>
                     <span class="nav-text">Outgoing</span>
                 </a>

@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Main\DashboardController;
+use App\Http\Controllers\Main\CategoryController;
+use App\Http\Controllers\Main\MedicineController;
+use App\Http\Controllers\Main\BatchController;
+use App\Http\Controllers\Main\OutgoingMedicineController;
 
 
 Route::namespace('Main')->middleware('auth')->group(function () {
@@ -17,7 +22,7 @@ Route::namespace('Main')->middleware('auth')->group(function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/print', 'print')->name('print');
-            Route::middleware('checkRole:admin')->group(function() {
+            Route::middleware('checkRole:admin')->group(function () {
                 Route::get('/create', 'create')->name('create');
                 Route::get('/edit/{id}', 'edit')->name('edit');
                 Route::post('/store', 'store')->name('store');
@@ -32,7 +37,7 @@ Route::namespace('Main')->middleware('auth')->group(function () {
         ->prefix('medicine')
         ->group(function () {
             Route::get('/', 'index')->name('index');
-            Route::middleware('checkRole:admin')->group(function() {
+            Route::middleware('checkRole:admin')->group(function () {
                 Route::get('/create', 'create')->name('create');
                 Route::get('/edit/{id}', 'edit')->name('edit');
                 Route::post('/store', 'store')->name('store');
@@ -47,7 +52,7 @@ Route::namespace('Main')->middleware('auth')->group(function () {
         ->prefix('batch')
         ->group(function () {
             Route::get('/', 'index')->name('index');
-                Route::middleware('checkRole:admin')->group(function() {
+            Route::middleware('checkRole:admin')->group(function () {
                 Route::get('/create', 'create')->name('create');
                 Route::get('/edit/{id}', 'edit')->name('edit');
                 Route::get('/medicine-detail/{medicine_id}', 'medicineDetail')->name('medicine.detail');
@@ -56,7 +61,6 @@ Route::namespace('Main')->middleware('auth')->group(function () {
                 Route::delete('/delete/{id}', 'delete')->name('delete');
             });
             Route::post('/print', 'print')->name('print');
-
         });
 
     Route::controller(OutgoingMedicineController::class)
@@ -76,7 +80,7 @@ Route::namespace('Main')->middleware('auth')->group(function () {
         });
 });
 
-Route::get('/not-found', function() {
+Route::get('/not-found', function () {
     return view('template.notFound');
 })->middleware('auth');
 
